@@ -5,7 +5,7 @@ instances:
     command: all_data
     arguments:
       jmx_host: {{ ansible_fqdn }}
-      jmx_port: 9999
+      jmx_port: {{ kafkaJmxPort }}
       collection_files: "/etc/newrelic-infra/integrations.d/kafka-jvm-metrics.yml,/etc/newrelic-infra/integrations.d/kafka-metrics.yml"
       metric_limit: 0
     labels:
