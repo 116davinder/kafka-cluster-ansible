@@ -1,0 +1,32 @@
+---
+
+- hosts: clusterNodes
+  gather_facts: true
+  roles:
+    - java
+    - common
+    - install
+    - configure
+    - service
+    - crons
+
+- hosts: clusterNodes
+  gather_facts: false
+  serial: 1
+  tasks:
+    - name: starting all nodes
+      import_role:
+        name: serviceState
+      vars:
+        serviceName: kafka
+        serviceState: started
+
+    - name: kafka Port Status
+      include_role:
+        name: portCheck
+      vars:
+        PortNumber: "{{ item }}"
+        PortStatus: started
+      loop:
+        - "{{ kafkaPort }}"
+        - "{{ kafkaJmxPort }}"

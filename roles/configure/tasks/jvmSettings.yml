@@ -1,0 +1,10 @@
+---
+
+- name: Creating kafka JVM configurations | kafka-server-start.sh
+  template:
+    src: "kafka-server-start.sh"
+    dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/bin/kafka-server-start.sh"
+    mode: 0775
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+  register: jvmConfigStatus

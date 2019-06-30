@@ -1,0 +1,12 @@
+---
+
+- name: Setting kafka Home | /etc/profile.d/kafka.sh
+  blockinfile:
+    path: /etc/profile.d/kafka.sh
+    mode: 0775
+    group: root
+    owner: root
+    create: true
+    block: |
+      export KAFKA_HOME={{ kafkaInstallDir }}/kafka
+      export PATH=$kafka_HOME/bin:$PATH

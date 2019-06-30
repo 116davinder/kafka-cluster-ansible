@@ -1,0 +1,14 @@
+---
+
+- name: creating kafka group
+  group:
+    name: "{{  kafkaGroup }}"
+    gid: "{{ kafkaGroupId }}"
+    state: present
+
+- name: creating kafka user
+  user:
+    name: "{{ kafkaUser }}"
+    comment: kafka Default User
+    uid: "{{ kafkaUserId }}"
+    group: "{{ kafkaGroup }}"

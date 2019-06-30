@@ -1,0 +1,14 @@
+---
+- name: Setting java update true if required
+  set_fact:
+    javaUpdateState: latest
+  when: updateJava
+
+- name: Install Openjdk | {{ javaVersion }} | RedHat
+  yum:
+    name: "{{ item }}"
+    state: "{{ javaUpdateState | default('present') }}"
+    update_cache: true
+  loop:
+    - "java-1.{{ javaVersion }}.0-openjdk"
+    - "java-1.{{ javaVersion }}.0-openjdk-devel"

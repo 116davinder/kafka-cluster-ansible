@@ -1,0 +1,12 @@
+---
+- include_tasks: jvmSettings.yml
+
+- name: Creating kafka configurations
+  include_role:
+      name: configure
+      tasks_from: dynamicConfigs.yml
+  vars:
+    - kafkaConfigFile: "{{ item }}"
+  loop:
+    - kafka-broker.properties
+    - log4j.properties

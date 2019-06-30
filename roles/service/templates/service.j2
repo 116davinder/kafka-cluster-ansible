@@ -1,0 +1,17 @@
+[Unit]
+Description=Apache Kafka
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User={{ kafkaUser }}
+Group={{ kafkaGroup }}
+
+ExecStart={{ kafkaInstallDir }}/kafka/bin/kafka-server-start.sh {{ kafkaInstallDir }}/kafka/config/kafka-broker.properties
+ExecStop={{ kafkaInstallDir }}/kafka/bin/kafka-server-stop.sh
+
+TimeoutStopSec=180
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

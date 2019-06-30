@@ -1,0 +1,5 @@
+.vagrant*
+*retry
+.ansible*
+*.vscode
+terraform/.terraform

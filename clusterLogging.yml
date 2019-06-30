@@ -1,0 +1,30 @@
+---
+
+- hosts: clusterNodes:clusterAddNodes
+  gather_facts: true
+  serial: 1
+  tasks:
+    - include_role:
+        name: configure
+        tasks_from: dynamicConfigs
+      vars:
+        - kafkaConfigFile: log4j.properties
+  
+    - name: restarting all nodes
+      import_role:
+        name: serviceState
+      vars:
+        serviceName: kafka
+        serviceState: restarted
+      when: configStatus.changed
+
+    - name: kafka port status
+      include_role:
+        name: portCheck
+      vars:
+        PortNumber: "{{ item }}"
+        PortStatus: started
+      loop:
+        - "{{ kafkaPort }}"
+        - "{{ kafkaJmxPort }}"
+      when: configStatus.changed

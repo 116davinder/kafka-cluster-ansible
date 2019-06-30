@@ -1,0 +1,17 @@
+---
+
+- name: Getting Java Home Path from System
+  shell: "set -o pipefail && readlink -fsq $(which java) | sed 's:/jre/bin/java::'"
+  register: javaHomeLocation
+  changed_when: false
+
+- name: Setting Java Home | /etc/profile.d/java.sh
+  blockinfile:
+    path: /etc/profile.d/java.sh
+    mode: 0775
+    group: root
+    owner: root
+    create: true
+    block: |
+      export JAVA_HOME={{ javaHomeLocation.stdout }}
+      export PATH=$JAVA_HOME/bin:$PATH

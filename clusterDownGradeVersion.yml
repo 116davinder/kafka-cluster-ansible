@@ -1,0 +1,46 @@
+---
+
+- hosts: clusterNodes:clusterAddNodes
+  gather_facts: false
+  any_errors_fatal: true
+  tasks:
+    - name: check kafka-{{ kafkaOldVersion }} installation files
+      stat:
+        path: "{{ kafkaInstallDir }}/kafka_{{ kafkaOldScalaVersion }}-{{ kafkaOldVersion }}"
+      register: kafkaOldVersionStatus
+
+    - name: fails if kafka installation files are missing
+      fail:
+        msg: "kafka down grade is not possible as kafka old installation files are missing"
+      when: not kafkaOldVersionStatus.exists
+
+- hosts: clusterNodes:clusterAddNodes
+  gather_facts: false
+  serial: 1
+  tasks:
+    - name: reverting kafka version to {{ kafkaOldVersion }}-{{ kafkaOldScalaVersion }}
+      import_role:
+        name: install
+        tasks_from: createSymlink
+      vars:
+        kafkaVersion: "{{ kafkaOldVersion }}"
+        kafkaScalaVersion: "{{ kafkaOldScalaVersion }}"
+
+    - name: restarting all nodes
+      import_role:
+        name: serviceState
+      vars:
+        serviceName: kafka
+        serviceState: restarted
+      when: kafkaSymlinkStatus.changed
+
+    - name: kafka Port Status
+      include_role:
+        name: portCheck
+      vars:
+        PortNumber: "{{ item }}"
+        PortStatus: started
+      loop:
+        - "{{ kafkaPort }}"
+        - "{{ kafkaJmxPort }}"
+      when: kafkaSymlinkStatus.changed

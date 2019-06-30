@@ -1,0 +1,10 @@
+---
+
+- name: copy & unarchieve kafka
+  include_tasks: download.yml
+
+- name: Create kafka dir symlink
+  include_tasks: createSymlink.yml
+
+- name: Setting kafka version into profile.d
+  include_tasks: envSet.yml

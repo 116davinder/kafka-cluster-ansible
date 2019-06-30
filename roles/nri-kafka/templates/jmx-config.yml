@@ -1,0 +1,12 @@
+integration_name: com.newrelic.jmx
+
+instances:
+  - name: jmx
+    command: all_data
+    arguments:
+      jmx_host: {{ ansible_fqdn }}
+      jmx_port: 9999
+      collection_files: "/etc/newrelic-infra/integrations.d/kafka-jvm-metrics.yml,/etc/newrelic-infra/integrations.d/kafka-metrics.yml"
+      metric_limit: 0
+    labels:
+      env: {{ kafkaClusterName }}

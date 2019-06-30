@@ -1,0 +1,8 @@
+---
+
+- name: "{{ serviceName }} Service | {{ serviceState }}"
+  systemd:
+    name: "{{ serviceName }}"
+    state: "{{ serviceState }}"
+    enabled: true
+    daemon_reload: true

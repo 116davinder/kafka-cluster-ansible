@@ -1,0 +1,17 @@
+---
+
+- name: Creating installing dir | {{ kafkaInstallDir }}
+  file:
+    path: "{{ kafkaInstallDir }}"
+    state: directory
+
+- name: Creating kafka directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    mode: 0775
+  loop:
+    - "{{ kafkaDataDir }}"
+    - "{{ kafkaLogDir }}"

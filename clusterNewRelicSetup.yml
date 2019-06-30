@@ -1,0 +1,17 @@
+---
+
+# Notes:
+# New version of integration can be downloaded from below link 
+# https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64
+
+# NewRelic Integration should be installed on all broker nodes
+- hosts: clusterNodes:clusterAddNodes
+  become: false
+  gather_facts: true
+  pre_tasks:
+    - name: checking newrelic infra agent status
+      shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
+      register: isNewRelicInfraInstalled
+  roles:
+    - role: nri-kafka
+      when: isNewRelicInfraInstalled != ''

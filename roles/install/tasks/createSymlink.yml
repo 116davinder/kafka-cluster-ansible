@@ -1,0 +1,10 @@
+---
+
+- name: Creating symlink to latest version | {{ kafkaVersion }}
+  file:
+    src: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+    dest: "{{ kafkaInstallDir }}/kafka"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    state: link
+  register: kafkaSymlinkStatus

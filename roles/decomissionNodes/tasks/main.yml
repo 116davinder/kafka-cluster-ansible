@@ -1,0 +1,32 @@
+---
+
+- name: Stopping kafka service
+  import_role:
+    name: serviceState
+  vars:
+    serviceName: kafka
+    serviceState: stopped
+
+- name: kafka Port Status
+  include_role:
+    name: portCheck
+  vars:
+    PortNumber: "{{ item }}"
+    PortStatus: stopped
+  loop:
+    - "{{ kafkaPort }}"
+    - "{{ kafkaJmxPort }}"
+
+- name: Removing all installation files
+  command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
+
+- name: Removing data & log dirs related to installation
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ kafkaInstallDir }}/kafka"
+    - "{{ kafkaDataDir }}"
+    - "{{ kafkaLogDir }}"
+    - "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+    - "/usr/lib/systemd/system/kafka.service"

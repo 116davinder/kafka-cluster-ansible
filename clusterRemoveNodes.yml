@@ -1,0 +1,14 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - pause:
+        prompt: "login to http://{{ groups['kafka-manager'][0] }}:9000 and reassign partitions to other nodes if any \nPress enter once reassignment is done"
+
+- hosts: clusterRemoveNodes
+  gather_facts: true
+  any_errors_fatal: true
+  serial: 1
+  roles:
+    - decomissionNodes

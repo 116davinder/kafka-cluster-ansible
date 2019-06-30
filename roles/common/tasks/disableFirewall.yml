@@ -1,0 +1,20 @@
+---
+
+- name: disable ufw firewall if exists
+  command: ufw disable
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: disable firewalld service if exists
+  service:
+      name: firewalld
+      enabled: false
+      state: stopped
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: taking iptables backup | /opt/iptables-{{ ansible_date_time.date }}.bak
+  shell: "iptables-save > /opt/iptables-{{ ansible_date_time.date }}.bak"
+  args:
+    creates: "/opt/iptables-{{ ansible_date_time.date }}.bak"
+
+- name: flushing all iptables rules if exists
+  command: iptables -F

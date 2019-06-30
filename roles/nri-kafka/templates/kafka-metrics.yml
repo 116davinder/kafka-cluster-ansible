@@ -1,0 +1,41 @@
+collect:
+# source: https://docs.confluent.io/current/kafka/monitoring.html
+
+    - domain: kafka.controller
+      event_type: kafkaMonitoring
+      beans:
+          - query: type=KafkaController,name=OfflinePartitionsCount
+          - query: type=KafkaController,name=ActiveControllerCount
+          - query: type=ControllerStats,name=LeaderElectionRateAndTimeMs
+          - query: type=ControllerStats,name=UncleanLeaderElectionsPerSec
+
+    - domain: kafka.log
+      event_type: kafkaMonitoring
+      beans:
+          - query: type=LogFlushStats,name=LogFlushRateAndTimeMs
+
+    - domain: kafka.network
+      event_type: kafkaMonitoring
+      beans:
+          - query: type=SocketServer,name=NetworkProcessorAvgIdlePercent
+          - query: type=RequestChannel,name=RequestQueueSize
+          - query: type=RequestMetrics,name=TotalTimeMs,request=*
+          - query: type=RequestMetrics,name=RequestQueueTimeMs,request=*
+          - query: type=RequestMetrics,name=LocalTimeMs,request=*
+          - query: type=RequestMetrics,name=RemoteTimeMs,request=*
+          - query: type=RequestMetrics,name=ResponseQueueTimeMs,request=*
+          - query: type=RequestMetrics,name=ResponseSendTimeMs,request=*
+          - query: type=RequestMetrics,name=RequestsPerSec,request=*
+
+    - domain: kafka.server
+      event_type: kafkaMonitoring
+      beans:
+          - query: type=*,name=*
+          - query: type=ReplicaFetcherManager,name=MaxLag,clientId=Replica
+          - query: type=FetcherLagMetrics,name=ConsumerLag,clientId=*,topic=*,partition=*
+          - query: type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=*
+
+    - domain: kafka.utils
+      event_type: kafkaMonitoring
+      beans:
+          - query: type=*,name=*

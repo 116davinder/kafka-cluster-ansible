@@ -1,0 +1,23 @@
+---
+
+# TODO: download kafka tar file to ansible server only if possible 
+#       to reduce multiple downloads on all nodes.
+#       Not Required: if downloading from local company mirror.
+
+- name: copy and unarchive kafka | {{ kafkaVersion }}
+  unarchive:
+    src: "{{ kafkaTarLocation }}"
+    dest: "{{ kafkaInstallDir }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    validate_certs: false
+    keep_newer: yes
+    creates: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/bin"
+
+- name: Ensuring permissions on unarchieved files
+  file:
+    path: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    recurse: true
+    mode: 0775

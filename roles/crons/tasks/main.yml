@@ -1,0 +1,10 @@
+---
+
+- name: kafka log dir clean up cron task
+  cron:
+    name: "kafka log dir clean up cron task"
+    minute: "0"
+    hour: "0"
+    weekday: "0"
+    user: root
+    job: 'find {{ kafkaLogDir }} -type f ! -name *.log -mtime +7 -exec rm -f {} \;'
