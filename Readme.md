@@ -1,6 +1,6 @@
 # Apache Kafka Ansible
 
-It is group of playbooks to manage apache kafka in paysafe group. It is also 100% compliant with ansible-lint rules.
+It is group of playbooks to manage apache kafka. It is also 100% compliant with ansible-lint rules.
 
 ## **Requirements**
 * Download Apache Kafka Tar on Ansible Server ( Mandatory )
