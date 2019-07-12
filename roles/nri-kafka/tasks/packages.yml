@@ -1,0 +1,22 @@
+---
+
+- name: settings names for newrelic jmx monitoring rpms
+  set_fact:
+    newRelicCliJmxRpmName: nrjmx-1.3.0-1.x86_64.rpm
+    newRelicJmxRpmName: nri-jmx-2.1.0-1.x86_64.rpm
+
+- name: copying newrelic integration rpms
+  copy:
+    src: "files/{{ item }}"
+    dest: "/tmp/{{ item }}"
+  loop:
+    - "{{ newRelicCliJmxRpmName }}"
+    - "{{ newRelicJmxRpmName }}"
+
+- name: installing newrelic integration on host
+  yum:
+    name: "/tmp/{{ item }}"
+    state: present
+  loop:
+    - "{{ newRelicCliJmxRpmName }}"
+    - "{{ newRelicJmxRpmName }}"

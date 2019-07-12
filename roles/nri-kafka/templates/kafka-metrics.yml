@@ -25,7 +25,6 @@ collect:
           - query: type=RequestMetrics,name=RemoteTimeMs,request=*
           - query: type=RequestMetrics,name=ResponseQueueTimeMs,request=*
           - query: type=RequestMetrics,name=ResponseSendTimeMs,request=*
-          - query: type=RequestMetrics,name=RequestsPerSec,request=*
 
     - domain: kafka.server
       event_type: kafkaMonitoring

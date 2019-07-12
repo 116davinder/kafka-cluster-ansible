@@ -9,4 +9,4 @@
     create: true
     block: |
       export KAFKA_HOME={{ kafkaInstallDir }}/kafka
-      export PATH=$kafka_HOME/bin:$PATH
+      export PATH=$KAFKA_HOME/bin:$PATH

@@ -1,0 +1,30 @@
+---
+
+# Common vars
+kafkaMirrorMakerReplicateTopicWhiteListPattern: ".*kafka-perf-test.*"   # java regex based pattern
+kafkaMirrorMakerHeapSize: 2G
+kafkaMirrorMakerProcessCountPerNode: 2
+kafkaMirrorMakerJmxInitialPort: 9980        # Port will be used like 9981 & 9982 if kafkaMirrorMakerProcessCountPerNode is set 2
+
+# Kafka Mirror Maker Consumer Settings
+kafkaMirrorMakerSourceDcClusterAddressString: 192.168.56.100:9092,192.168.56.101:9092,192.168.56.102:9092           #no need to put all the hosts here
+kafkaMirrorMakerGroupId: "kafka-mirror-maker-consumer-{{ kafkaClusterName }}"
+kafkaMirrorMakerAutoOffsetReset: "earliest"
+kafkaMirrorMakerPartitionAssignmentStrategy: "org.apache.kafka.clients.consumer.RoundRobinAssignor"
+kafkaMirrorMakerFetchMaxBytes: 52428800
+kafkaMirrorMakerFetchMinBytes: 1000012
+kafkaMirrorMakerFetchMaxWaitMs: 500
+
+# Kafka Mirror Maker Producer Settings
+kafkaMirrorMakerDestinationDcClusterAddressString: 192.168.56.100:9092,192.168.56.101:9092,192.168.56.102:9092     #no need to put all the hosts here
+kafkaMirrorMakerCompressionType: "none"
+kafkaMirrorMakerPartitionerClass: "org.apache.kafka.clients.producer.internals.DefaultPartitioner"
+kafkaMirrorMakerRequestTimeoutMs: 30000
+kafkaMirrorMakerMaxBlockMs: 60000
+kafkaMirrorMakerLingerMs: 15000
+kafkaMirrorMakerMaxRequestSize: 1000000
+kafkaMirrorMakerBatchSize: 500000
+kafkaMirrorMakerBufferMemory: 200000000 
+kafkaMirrorMakerMaxInFlightRequestsPerConnection: 5
+kafkaMirrorMakerClientId: "kafka-mirror-maker-producer-{{ kafkaClusterName }}"
+kafkaMirrorMakerAcks: "all"

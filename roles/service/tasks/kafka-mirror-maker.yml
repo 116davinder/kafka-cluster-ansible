@@ -1,0 +1,7 @@
+---
+
+- name: Creating Service File | kafka-mirror-maker
+  template:
+    src: kafka-mirror-maker-service.j2
+    dest: "/usr/lib/systemd/system/kafka-mirror-maker-{{ item }}.service"
+  loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"

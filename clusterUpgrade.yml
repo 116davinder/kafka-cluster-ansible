@@ -29,11 +29,6 @@
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: false
   serial: 1
-  pre_tasks:
-    - name: Switching Kafka Version to {{ kafkaVersion }} on all nodes (Rolling fashion)
-      pause:
-        prompt: "press enter to confirm or ctrl-c to cancel"
-      run_once: true
   tasks:
     - name: switching kafka version to latest
       import_role:
@@ -51,8 +46,8 @@
       include_role:
         name: portCheck
       vars:
-        PortNumber: "{{ item }}"
-        PortStatus: started
+        portNumber: "{{ item }}"
+        portStatus: started
       loop:
         - "{{ kafkaPort }}"
         - "{{ kafkaJmxPort }}"

@@ -1,0 +1,19 @@
+---
+
+- hosts: kafka-mirror-maker
+  gather_facts: true
+  serial: 1
+  tasks:
+    - include_role:
+        name: serviceState
+      vars:
+        serviceName: "kafka-mirror-maker-{{ item }}"
+        serviceState: restarted
+      loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
+
+    - include_role:
+        name: portCheck
+      vars:
+        portNumber: "{{ kafkaMirrorMakerJmxInitialPort + item }}"
+        portStatus: started
+      loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"

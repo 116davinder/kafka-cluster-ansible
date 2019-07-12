@@ -1,0 +1,40 @@
+---
+
+- hosts: kafka-mirror-maker
+  gather_facts: true
+  roles:
+    - java
+    - common
+    - install
+
+- hosts: kafka-mirror-maker
+  gather_facts: true
+  tasks:
+    - include_role:
+        name: configure
+        tasks_from: mirrorMaker.yml
+
+    - include_role:
+        name: service
+        tasks_from: kafka-mirror-maker.yml
+
+    - include_role:
+        name: serviceState
+      vars:
+        serviceName: "kafka-mirror-maker-{{ item }}"
+        serviceState: started
+      loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
+
+    - include_role:
+        name: portCheck
+      vars:
+        portNumber: "{{ kafkaMirrorMakerJmxInitialPort + item }}"
+        portStatus: started
+      loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
+
+- hosts: kafka-mirror-maker
+  gather_facts: true
+  tasks:
+    - include_role:
+        name: nri-kafka
+        tasks_from: kafka-mirror-maker.yml

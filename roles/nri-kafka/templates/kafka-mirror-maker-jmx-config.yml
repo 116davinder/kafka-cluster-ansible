@@ -1,0 +1,16 @@
+integration_name: com.newrelic.jmx
+
+instances:
+{% for processCount in range(kafkaMirrorMakerProcessCountPerNode) %}
+
+  - name: jmx
+    command: all_data
+    arguments:
+      jmx_host: {{ ansible_fqdn }}
+      jmx_port: {{ kafkaMirrorMakerJmxInitialPort + processCount + 1 }}
+      collection_files: "/etc/newrelic-infra/integrations.d/kafka-mirror-maker-jvm-metrics.yml,/etc/newrelic-infra/integrations.d/kafka-mirror-maker-metrics.yml"
+      metric_limit: 0
+    labels:
+      env: {{ kafkaClusterName }}
+      mirrorMakerProcessName: kafka-mirror-maker-{{ processCount + 1 }}
+{% endfor %}

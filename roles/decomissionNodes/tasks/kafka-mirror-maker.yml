@@ -1,0 +1,33 @@
+---
+
+- name: stopping kafka mirror maker processes
+  include_role:
+    name: serviceState
+  vars:
+    serviceName: "kafka-mirror-maker-{{ item }}"
+    serviceState: stopped
+  loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
+
+- name: checking port status of kafka mirror maker processes
+  include_role:
+    name: portCheck
+  vars:
+    portNumber: "{{ kafkaMirrorMakerJmxInitialPort + item }}"
+    portStatus: stopped
+  loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
+
+- name: Removing all installation files for kafka mirror maker
+  command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
+
+- name: Removing data & log dirs related to installation
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ kafkaInstallDir }}/kafka"
+    - "{{ kafkaDataDir }}"
+    - "{{ kafkaLogDir }}"
+    - "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+
+- name: Removing all systemd files
+  command: "/bin/rm -rf /usr/lib/systemd/system/kafka*.service"

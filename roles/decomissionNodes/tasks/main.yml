@@ -11,8 +11,8 @@
   include_role:
     name: portCheck
   vars:
-    PortNumber: "{{ item }}"
-    PortStatus: stopped
+    portNumber: "{{ item }}"
+    portStatus: stopped
   loop:
     - "{{ kafkaPort }}"
     - "{{ kafkaJmxPort }}"

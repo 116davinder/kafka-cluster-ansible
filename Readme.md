@@ -1,12 +1,12 @@
 # Apache Kafka Ansible
 
-It is group of playbooks to manage apache kafka. It is also 100% compliant with ansible-lint rules.
+It is group of playbooks to manage apache kafka in paysafe group. It is also 100% compliant with ansible-lint rules.
 
 ## **Requirements**
 * Download Apache Kafka Tar on Ansible Server ( Mandatory )
 * vagrant (optional)
 * Any OS with SystemD
-* ansible
+* Ansible
 
 ## **Notes***
 ```
@@ -20,6 +20,8 @@ It is group of playbooks to manage apache kafka. It is also 100% compliant with 
 https://github.com/116davinder/zookeeper-cluster-ansible
 
 # **Production Environment Setup**
+
+## Apache Kafka Playbooks
 
 ### **To start new cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
@@ -79,13 +81,32 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterRemoveNodes.yml```
 
+## Apache Kafka Mirror Maker Playbooks
+
+### **To start new cluster**
+* Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
+* Update Required vars in ```inventory/<environment>/mirror-maker.ini``` .
+
+```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMaker.yml```
+
+### **To Remove nodes from cluster**
+* Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
+* Update Required vars in ```inventory/<environment>/mirror-maker.ini``` .
+
+```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRemoveNodes.yml```
+
+### **Rolling restart cluster**
+
+```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRollingRestart.yml```
+
+
 ### **Tested OS**
 * CentOS 7
 * RedHat 7
 
 ### **Tested Ansible Version**
 ```
-ansible 2.7.10
+ansible 2.8.1
   config file = None
   configured module search path = ['/home/davinderpal/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/local/lib/python3.6/dist-packages/ansible

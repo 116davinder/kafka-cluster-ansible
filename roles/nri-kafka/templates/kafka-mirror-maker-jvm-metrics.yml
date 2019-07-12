@@ -1,0 +1,21 @@
+collect:
+# Standard JVM Metrics
+    - domain: java.lang
+      event_type: kafkaMirrorMakerMonitoring
+      beans:
+          - query: type=GarbageCollector,name=*
+            attributes:
+                - CollectionCount
+                - CollectionTime
+          - query: type=Memory
+            attributes:
+                - HeapMemoryUsage.Max
+                - HeapMemoryUsage.Used
+                - NonHeapMemoryUsage.Used
+          - query: type=Threading
+            attributes:
+                - ThreadCount
+                - PeakThreadCount
+          - query: type=ClassLoading
+            attributes:
+                - LoadedClassCount

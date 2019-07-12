@@ -1,0 +1,20 @@
+collect:
+
+    - domain: kafka.consumer
+      event_type: kafkaMirrorMakerMonitoring
+      beans:
+          - query: type=consumer-coordinator-metrics,client-id=*
+          - query: type=consumer-fetch-manager-metrics,client-id=*
+          - query: type=consumer-fetch-manager-metrics,client-id=*,topic=*,partition=*
+          - query: type=consumer-metrics,client-id=*
+
+    - domain: kafka.producer
+      event_type: kafkaMirrorMakerMonitoring
+      beans:
+          - query: type=producer-metrics,client-id=*
+          - query: type=producer-node-metrics,client-id=*,node-id=*
+
+    - domain: kafka.tools
+      event_type: kafkaMirrorMakerMonitoring
+      beans:
+          - query: type=MirrorMaker,name=MirrorMaker-numDroppedMessages

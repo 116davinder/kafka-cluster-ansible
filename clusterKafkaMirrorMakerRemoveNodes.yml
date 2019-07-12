@@ -1,0 +1,10 @@
+---
+
+- hosts: kafka-mirror-maker-remove-nodes
+  gather_facts: true
+  any_errors_fatal: true
+  serial: 1
+  tasks:
+    - include_role:
+        name: decomissionNodes
+        tasks_from: kafka-mirror-maker.yml
