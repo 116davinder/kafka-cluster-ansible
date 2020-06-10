@@ -22,7 +22,7 @@
         name: serviceState
       vars:
         serviceName: "kafka-mirror-maker-{{ item }}"
-        serviceState: started
+        serviceState: restarted
       loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
 
     - include_role:
