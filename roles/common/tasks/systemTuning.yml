@@ -36,3 +36,13 @@
     - { "key": "net.ipv4.tcp_wmem", "value": "4096 277750 134217728" }
     - { "key": "net.core.netdev_max_backlog", "value": "300000" }
   ignore_errors: true
+
+- name: update ulimits
+  blockinfile:
+    path: /etc/security/limits.conf
+    block: |
+      {{ kafkaUser }} hard core 0
+      {{ kafkaUser }} soft nofile 65535
+      {{ kafkaUser }} hard nofile 65535
+      {{ kafkaUser }} soft nproc 4096
+      {{ kafkaUser }} hard nproc 16384
