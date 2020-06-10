@@ -1,0 +1,40 @@
+---
+
+- hosts: clusterNodes:clusterAddNodes:kafka-mirror-maker
+  gather_facts: true
+  pre_tasks:
+    - name: install gcc and python-devel
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gcc
+        - python3-devel
+
+    - name: copy jmxquery / psutil tar files
+      copy:
+        src: "roles/jmxMonitor/files/{{ item }}"
+        dest: "/tmp/{{ item }}"
+      loop:
+        - jmxquery-0.6.0.tar.gz
+        - psutil-5.7.0.tar.gz
+
+    - name: installing jmxquery / psutil with pip3
+      pip:
+        name: /tmp/{{ item }}
+        executable: pip3
+      loop:
+        - jmxquery-0.6.0.tar.gz
+        - psutil-5.7.0.tar.gz
+
+- hosts: clusterNodes:clusterAddNodes
+  gather_facts: true
+  roles:
+    - jmxMonitor
+
+- hosts: kafka-mirror-maker
+  gather_facts: true
+  tasks:
+    - include_role:
+        name: jmxMonitor
+        tasks_from: kafka-mirror-maker.yml
