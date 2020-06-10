@@ -21,13 +21,28 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 # **Production Environment Setup**
 
-## Apache Kafka Playbooks
+## **Apache Kafka Playbooks**
 
 ### **To start new cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/cluster.ini``` .
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterSetup.yml```
+
+### Monitoring for Kafka Cluster
+* Kafka Cluster Monitoring & Kafka Mirror Maker Cluster Monitoring
+`roles/jmxMonitor/files/kafka-input.txt`
+`roles/jmxMonitor/files/kafka-mirror-input.txt`
+```
+ansible-playbook -i inventory/<environment>/cluster.ini clusterJmxMonitoringSetup.yml
+```
+
+* Kafka Cluster Consumer Group Monitoring
+It will monitor consumer groups mentioned in below file.
+`roles/jmxMonitor/files/kafka-consumer-group-metric-input.txt`
+```
+ansible-playbook -i inventory/<environment>/cluster.ini clusterConsumerMetricSetup.yml
+```
 
 ### **To add new broker to cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
@@ -66,6 +81,11 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterLogging.yml```
 
+### **To update crons settings of cluster and mirror maker cluster**
+It contains cron for log file clean up for kafka cluster and kafka mirror maker cluster.
+
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterCrons.yml```
+
 ### **To upgrade java version of cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 
@@ -81,17 +101,28 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterRemoveNodes.yml```
 
-## Apache Kafka Mirror Maker Playbooks
+## **Apache Kafka Mirror Maker Playbooks**
+It will be installed in similar way to apache kafka but it will start apache kafka mirror maker processes only.
+
+**Note:***
+* Apache Kafka & Apache Kafka Mirror Maker should not be installed on same node.
+* It is recommended to install multiple kafka mirror maker process on same node and contolled by this parameter `kafkaMirrorMakerProcessCountPerNode`
 
 ### **To start new cluster**
+* Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
-* Update Required vars in ```inventory/<environment>/mirror-maker.ini``` .
 
 ```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMaker.yml```
 
-### **To Remove nodes from cluster**
+### **To upgrade cluster**
+* Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
-* Update Required vars in ```inventory/<environment>/mirror-maker.ini``` .
+
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMakerUpgrade.yml```
+
+### **To Remove nodes from cluster**
+* Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
+* Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
 
 ```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRemoveNodes.yml```
 
