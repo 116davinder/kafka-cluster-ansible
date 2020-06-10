@@ -43,6 +43,10 @@ It will monitor consumer groups mentioned in below file.
 ```
 ansible-playbook -i inventory/<environment>/cluster.ini clusterConsumerMetricSetup.yml
 ```
+* **Sample Splunk Dashboards**
+```
+these are under "files/splunk dashboards" folder.
+```
 
 ### **To add new broker to cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
