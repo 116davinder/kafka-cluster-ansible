@@ -1,0 +1,514 @@
+<form>
+  <label>Apache Kafka Mirror Maker v1</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="dropdown" token="env">
+      <label>Environment</label>
+      <choice value="*">All</choice>
+      <fieldForLabel>environment</fieldForLabel>
+      <fieldForValue>environment</fieldForValue>
+      <search>
+        <query>index=kafka sourcetype=kafka processName="Kafka-Mirror-Maker-Process-*" | stats count by environment</query>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </search>
+      <default>*</default>
+      <initialValue>*</initialValue>
+    </input>
+    <input type="dropdown" token="pn">
+      <label>Process Name</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <initialValue>*</initialValue>
+      <fieldForLabel>processName</fieldForLabel>
+      <fieldForValue>processName</fieldForValue>
+      <search>
+        <query>index=kafka sourcetype=kafka environment=$env$ processName="Kafka-Mirror-Maker-Process-*" | stats count by processName</query>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="time" token="time_range">
+      <label>Time Range</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>System CPU Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ host=*mirror* domainName=cpu
+| timechart latest(usedCpuPercent) as usedCpuPercent by host</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>System Memory Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka domainName=memory environment=$env$ host=*mirror*
+| timechart latest(totalMem) as TotalMemory, latest(usedMem) as UsedMemory, latest(buffers) as Buffers by host</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Number of Dropped Messages (Per Process)</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$
+queryName="type=MirrorMaker,name=MirrorMaker-numDroppedMessages/Value"
+| eval tp=split(queryName,"type=MirrorMaker,name=") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Disk Usage</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName=disk
+| timechart latest(usedInGB) as usedInGB, latest(totalInGB) as totalInGB by host useother=false</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisStart</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Producer: Record Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*record-*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Producer: Buffer Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*record-*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Producer: In/Out Rate (MB/Sec)</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*-byte-rate"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| eval queryValue=queryValue/1000000
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Producer: Connection Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*connection*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Producer: Request Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*request*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Producer: Batch Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*batch*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Producer: Throttle Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.producer" queryName="type=producer-metrics,client-id=*"  NOT "NaN}" queryName="*produce-throttle*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Consumer: Commit Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="type=consumer-coordinator-metrics*"  NOT "NaN}" queryName="*commit*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Comsumer: Sync Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="type=consumer-coordinator-metrics*"  NOT "NaN}" queryName="*sync*"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Consumer: Lag stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="type=consumer-fetch-manager-metrics,client-id=*,topic=*,partition=*/records-lag"
+| eval tp=split(queryName,"topic=") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Consumer: Assigned Partitions</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="type=consumer-coordinator-metrics*"  NOT "NaN}" queryName="*assigned-partitions"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Consumer: Fetch Manager Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="*/fetch-*-avg" OR queryName="*/*-consumed-rate"  NOT "NaN}"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Consumer: HeartBeat Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="*/heartbeat-*"  NOT "NaN}"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Consumer: Connection Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="*/connection*"  NOT "NaN}"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Consumer: In/Out Rate (KB/Sec)</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="kafka.consumer" queryName="*/*-byte-rate*"  NOT "NaN}"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host
+| eval queryValue=queryValue/1000
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>JVM Stats (GB)</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="java.lang" 
+queryName="type=Memory/*MemoryUsage/used" OR queryName="type=Memory/HeapMemoryUsage/max"
+| eval tp=split(queryName,"type=Memory/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".host
+| eval queryValue=queryValue/1000000000
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Garbage Collector Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="java.lang" 
+queryName="type=GarbageCollector,name=*CollectionCount"
+| eval tp=split(queryName,"type=GarbageCollector,name=") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".host
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>JVM Thread Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="java.lang" 
+queryName="*/ThreadCount" OR queryName="*/PeakThreadCount"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host 
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>JVM Class Stats</title>
+      <chart>
+        <search>
+          <query>index=kafka sourcetype=kafka environment=$env$ processName=$pn$ domainName="java.lang" 
+queryName="type=ClassLoading/*ClassCount"
+| eval tp=split(queryName,"/") | eval newQuery=mvindex(tp,1)
+| eval query_host=newQuery.":".processName.":".host 
+| timechart latest(queryValue) by query_host useother=f</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisEnd</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+</form>
