@@ -1,0 +1,23 @@
+---
+
+- name: creating folder for jmx monitor
+  file:
+    path: "{{ kafkaInstallDir }}/jmxMonitor"
+    state: directory
+
+- name: copying script and input files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ kafkaInstallDir }}/jmxMonitor/{{ item }}"
+  loop:
+    - kafka-jmx-metric-collector.py
+    - kafka-input.txt
+
+- name: kafka metric collector cron
+  cron:
+    name: "kafka metric collector cron task"
+    minute: "*"
+    hour: "*"
+    weekday: "*"
+    user: root
+    job: 'find /bin/ -name "python3*m" -print0 -exec {} {{ kafkaInstallDir }}/jmxMonitor/kafka-jmx-metric-collector.py {{ ansible_fqdn }} {{ kafkaJmxPort }} {{ kafkaInstallDir }}/jmxMonitor/kafka-input.txt {{ kafkaLogDir }}/ {{ kafkaClusterName }} \;'

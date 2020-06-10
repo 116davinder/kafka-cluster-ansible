@@ -1,0 +1,21 @@
+- name: creating folder for jmx monitor
+  file:
+    path: "{{ kafkaInstallDir }}/jmxMonitor"
+    state: directory
+
+- name: copying script and input files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ kafkaInstallDir }}/jmxMonitor/{{ item }}"
+  loop:
+    - kafka-consumer-group-metric.py
+    - kafka-consumer-group-metric-input.txt
+
+- name: creating kafka consumer group metric collector cron
+  cron:
+    name: "kafka consumer group metric collector cron task"
+    minute: "*"
+    hour: "*"
+    weekday: "*"
+    user: root
+    job: 'python3 {{ kafkaInstallDir }}/jmxMonitor/kafka-consumer-group-metric.py {{ kafkaInstallDir }}/jmxMonitor/kafka-consumer-group-metric-input.txt {{ kafkaLogDir }}/ {{ kafkaClusterName }}'

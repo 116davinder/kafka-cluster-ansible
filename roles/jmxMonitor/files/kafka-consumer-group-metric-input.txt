@@ -1,0 +1,14 @@
+#######################################################################
+# This file is input file for consumer group metric collection script.
+# Usage: <topic name without environment>[space]<group_id>
+#
+# Note:
+# 1. if you same consumer reading from mulitple topics then
+#    add mulitple lines with each topicName and same group_id.
+# 2. group_id is case sensistive.
+# 3. if you have typo in topicName or group_id, metric won't be collected.
+# 4. group_id should be same across environments.
+# 5. all group_id/topic stats can't be collected as those will be too much
+#    so only In Line Transaction Topic/group_id data should be collected.
+#######################################################################
+topic1 consumer_group_id1

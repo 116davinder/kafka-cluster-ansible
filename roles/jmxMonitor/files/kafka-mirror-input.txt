@@ -1,0 +1,11 @@
+java.lang:type=GarbageCollector,name=*
+java.lang:type=Memory
+java.lang:type=Threading
+java.lang:type=ClassLoading
+kafka.consumer:type=consumer-coordinator-metrics,client-id=*
+kafka.consumer:type=consumer-fetch-manager-metrics,client-id=*
+kafka.consumer:type=consumer-fetch-manager-metrics,client-id=*,topic=*,partition=*
+kafka.consumer:type=consumer-metrics,client-id=*
+kafka.producer:type=producer-metrics,client-id=*
+kafka.producer:type=producer-node-metrics,client-id=*,node-id=*
+kafka.tools:type=MirrorMaker,name=MirrorMaker-numDroppedMessages
