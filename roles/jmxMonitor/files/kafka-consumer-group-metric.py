@@ -2,6 +2,7 @@ from kafka import KafkaConsumer, TopicPartition, KafkaAdminClient
 import json
 import sys
 from datetime import datetime
+import threading
 
 class KCMetric:
     def __init__(self,topic,group_id,logDir,env):
@@ -71,7 +72,9 @@ def main():
             try:
                 kc = KCMetric(topic.strip(), group_id.strip(), logDir, env)
                 if kc.checkConsumerGroupName():
-                    kc.getMetric()
+                    _t = threading.Thread(
+                        target=kc.getMetric
+                    ).start()
             except:
                 print("something failed")
 
