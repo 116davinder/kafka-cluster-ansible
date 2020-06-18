@@ -11,6 +11,7 @@ from datetime import datetime
 import json
 import sys
 import psutil
+import threading
 
 class KafkaJmx:
     def __init__(self,kAddr,kPort,inputFile,logDir,env):
@@ -103,9 +104,22 @@ def main():
 
     z = KafkaJmx(hostname, port, inputFile, logDir,env)
     z.cleanUpFiles()
-    z.getMetric()
-    z.getCpuMetric()
-    z.getMemoryMetric()
-    z.getStorageMetric()
+
+    _metric_thread = threading.Thread(
+        target=z.getMetric
+    ).start()
+
+    _cpu_metric_thread = threading.Thread(
+        target=z.getCpuMetric
+    ).start()
+
+    _memory_metric_thread = threading.Thread(
+        target=z.getMemoryMetric
+    ).start()
+
+    _storage_metric_thread = threading.Thread(
+        target=z.getStorageMetric
+    ).start()
+
 
 main()
