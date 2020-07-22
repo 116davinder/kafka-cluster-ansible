@@ -30,22 +30,34 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterSetup.yml```
 
 ### Monitoring for Kafka Cluster
-* Kafka Cluster Monitoring & Kafka Mirror Maker Cluster Monitoring
+* **To add Custom monitoring to cluster**
+
 `roles/jmxMonitor/files/kafka-input.txt`
+
 `roles/jmxMonitor/files/kafka-mirror-input.txt`
 ```
 ansible-playbook -i inventory/<environment>/cluster.ini clusterJmxMonitoringSetup.yml
 ```
 
-* Kafka Cluster Consumer Group Monitoring
+* **To add Custom Consumer Group monitoring to cluster**
 It will monitor consumer groups mentioned in below file.
 `roles/jmxMonitor/files/kafka-consumer-group-metric-input.txt`
+
 ```
 ansible-playbook -i inventory/<environment>/cluster.ini clusterConsumerMetricSetup.yml
 ```
+
 * **Sample Splunk Dashboards**
 ```
 these are under "files/splunk dashboards" folder.
+```
+* **To add newrelic monitoring to cluster**
+
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterNewRelicSetup.yml```
+
+* **Sample NewRelic Dashboards**
+```
+these are under "files/newrelic-dashboards" folder.
 ```
 
 ### **To add new broker to cluster**
@@ -64,11 +76,6 @@ these are under "files/splunk dashboards" folder.
 ### **Rolling restart cluster**
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterRollingRestart.yml```
-
-### **To add newrelic monitoring to cluster**
-* add newrelic rpms to `files` folder.
-
-```ansible-playbook -i inventory/<environment>/cluster.ini clusterNewRelicSetup.yml```
 
 ### **To update broker settings only of cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
