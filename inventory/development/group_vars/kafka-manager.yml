@@ -1,0 +1,13 @@
+---
+
+kafkaManagerInstallDir: /opt
+kafkaManagerVersion: 3.0.0.5
+kafkaManagerDownloadLink: "https://github.com/yahoo/CMAK/releases/download/{{ kafkaManagerVersion }}/cmak-{{ kafkaManagerVersion }}.zip"
+# if you don't want to download with ansible
+kafkaManagerRemoteDownload: yes
+kafkaManagerLocalLink: "/tmp/ansible-server/cmak-{{ kafkaManagerVersion }}.zip"
+
+kafkaManagerZkHosts: "10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181"
+kafkaManagerWebPort: 9000
+KafkaManagerBasicAuth: true
+KafkaManagerBasicAuthPassword: "random_password"

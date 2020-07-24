@@ -1,0 +1,11 @@
+---
+
+- hosts: kafka-manager
+  gather_facts: true
+  pre_tasks:
+    - include_role:
+        name: common
+        tasks_from: createUser.yml
+  roles:
+    - java
+    - kafka-manager

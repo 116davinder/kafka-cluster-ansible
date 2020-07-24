@@ -141,6 +141,10 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRollingRestart.yml```
 
+### **Install / Upgrade / Update Kafka Manager**
+* `inventory/<environment>/group_vars/kafka-manager.yml`
+
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaManager.yml```
 
 ### **Tested OS**
 * CentOS 7
@@ -148,10 +152,10 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ### **Tested Ansible Version**
 ```
-ansible 2.8.1
+ansible 2.9.11
   config file = None
   configured module search path = ['/home/davinderpal/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.6/dist-packages/ansible
+  ansible python module location = /usr/local/lib/python3.8/dist-packages/ansible
   executable location = /usr/local/bin/ansible
-  python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
+  python version = 3.8.2 (default, Jul 16 2020, 14:00:26) [GCC 9.3.0]
 ```

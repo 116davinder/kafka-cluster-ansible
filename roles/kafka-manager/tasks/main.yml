@@ -1,0 +1,47 @@
+---
+
+- name: copy and unarchive kafka manager | {{ kafkaManagerVersion }}
+  unarchive:
+    src: "{{ kafkaManagerDownloadLink }}"
+    dest: "{{ kafkaManagerInstallDir }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    validate_certs: false
+    keep_newer: yes
+    remote_src: "{{ kafkaManagerRemoteDownload }}"
+    creates: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}/bin"
+
+- name: Ensuring permissions on unarchieved files
+  file:
+    path: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    recurse: true
+    mode: 0775
+
+- name: Creating symlink to latest version | {{ kafkaManagerVersion }}
+  file:
+    src: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}"
+    dest: "{{ kafkaManagerInstallDir }}/kafka-manager"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    state: link
+
+- name: creating application.conf for kafka-manager
+  template:
+    src: application.conf.j2
+    dest: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}/conf/application.conf"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+
+- name: creating systemd unit file for kafka-manager
+  template:
+    src: kafka-manager.service.j2
+    dest: /usr/lib/systemd/system/kafka-manager.service
+
+- name: start kafka-manager service
+  import_role:
+    name: serviceState
+  vars:
+    serviceName: kafka-manager
+    serviceState: started

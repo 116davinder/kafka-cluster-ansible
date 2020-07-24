@@ -1,0 +1,12 @@
+[Unit]
+Description=Apache Kafka Manager ( CMAK )
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User={{ kafkaUser }}
+Group={{ kafkaGroup }}
+ExecStart={{ kafkaManagerInstallDir }}/kafka-manager/bin/cmak
+
+[Install]
+WantedBy=multi-user.target
