@@ -21,6 +21,11 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 # **Production Environment Setup**
 
+## **Cloud Apache Kafka Terraform**
+Under terrform folder
+* `terraform/aws`
+* `terraform/oci`
+
 ## **Apache Kafka Playbooks**
 
 ### **To start new cluster**

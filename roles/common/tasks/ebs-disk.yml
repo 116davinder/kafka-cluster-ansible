@@ -1,0 +1,29 @@
+---
+
+- name: install xfs untils
+  package:
+    name: xfsprogs
+    state: present
+  ignore_errors: true
+
+- name: check filesystem on given device
+  command: file -s "{{ zookeeper_ebs_device }}"
+  register: zookeeper_ebs_device_status
+
+- name: create filesystem on given device
+  filesystem:
+    fstype: "{{ zookeeper_ebs_device_fs }}"
+    dev: "{{ zookeeper_ebs_device }}"
+  when: zookeeper_ebs_device_status.stdout | regex_search(' data')
+
+- name: create zookeeper ebs mount dir
+  file:
+    path: "{{ zookeeper_ebs_device_mount_location }}"
+    state: directory
+
+- name: mount zookeeper ebs volume
+  mount:
+    path: "{{ zookeeper_ebs_device_mount_location }}"
+    src: "{{ zookeeper_ebs_device }}"
+    fstype: xfs
+    state: mounted
