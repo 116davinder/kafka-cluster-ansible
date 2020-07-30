@@ -1,5 +1,10 @@
 # Kafka Manager Guide
 
+**Notes**
+
+Can be Installed with ansible as well.
+
+https://github.com/116davinder/kafka-cluster-ansible#install--upgrade--update-kafka-manager
 # Installation
 1. Download the latest Release Code:  ( https://github.com/yahoo/kafka-manager/releases )
 2. Build the Code in your desktop ( https://github.com/yahoo/kafka-manager/blob/master/README.md#deployment )

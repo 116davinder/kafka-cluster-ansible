@@ -12,3 +12,14 @@
   loop:
     - "java-1.{{ javaVersion }}.0-openjdk"
     - "java-1.{{ javaVersion }}.0-openjdk-devel"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: "{{ javaUpdateState | default('present') }}"
+    update_cache: true
+  loop:
+    - "openjdk-{{ javaVersion }}-jdk-headless"
+    - "openjdk-{{ javaVersion }}-jdk"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

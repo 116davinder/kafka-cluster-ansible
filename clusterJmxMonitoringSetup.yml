@@ -3,13 +3,23 @@
 - hosts: clusterNodes:clusterAddNodes:kafka-mirror-maker
   gather_facts: true
   pre_tasks:
-    - name: install gcc and python-devel
+    - name: install gcc and python-devel ( Redhat / CentOS )
       yum:
         name: "{{ item }}"
         state: present
       loop:
         - gcc
         - python3-devel
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: install gcc and python-devel ( Debain / Ubuntu )
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gcc
+        - python3-dev
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: copy jmxquery / psutil tar files
       copy:

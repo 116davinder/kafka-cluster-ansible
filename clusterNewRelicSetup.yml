@@ -2,16 +2,48 @@
 
 # Notes:
 # New version of integration can be downloaded from below link 
-# https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64
+# Redhat / CentOS: https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64
+# Ubuntu / Debain: https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/
 
 # NewRelic Integration should be installed on all broker nodes
 - hosts: clusterNodes:clusterAddNodes
-  become: false
+  become: true
   gather_facts: true
   pre_tasks:
-    - name: checking newrelic infra agent status
+    - name: checking newrelic infra agent status ( Redhat / CentOS )
       shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
-      register: isNewRelicInfraInstalled
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      register: isNewRelicInfraInstalledYum
+
+    - name: checking newrelic infra agent status ( Ubuntu / Debain )
+      shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      register: isNewRelicInfraInstalledApt
+
   roles:
     - role: nri-kafka
-      when: isNewRelicInfraInstalled != ''
+      when:
+        - isNewRelicInfraInstalledYum != '' or isNewRelicInfraInstalledApt != ''
+        - isNewRelicInfraInstalledYum is not skipped or isNewRelicInfraInstalledApt is not skipped
+
+- hosts: kafka-mirror-maker
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - name: checking newrelic infra agent status ( Redhat / CentOS )
+      shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      register: isNewRelicInfraInstalledYum
+
+    - name: checking newrelic infra agent status ( Ubuntu / Debain )
+      shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      register: isNewRelicInfraInstalledApt
+
+  tasks:
+    - include_role:
+        name: nri-kafka
+        tasks_from: kafka-mirror-maker.yml
+      when:
+        - isNewRelicInfraInstalledYum != '' or isNewRelicInfraInstalledApt != ''
+        - isNewRelicInfraInstalledYum is not skipped or isNewRelicInfraInstalledApt is not skipped

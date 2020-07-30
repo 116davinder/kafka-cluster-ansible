@@ -12,6 +12,7 @@ It is group of playbooks to manage apache kafka. It is also 100% compliant with 
 ```
 1. It assumes you have zookeeper already running in localmode or cluster mode.
 2. All tasks like broker/jvm/logging/downgrade/removeOldVersion will be done in serial order.
+3. It doesn't support upgrading old kafka clusters from 0.9.0 to 2.x versions.
 ```
 
 ## **Extra**
@@ -21,7 +22,7 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 # **Production Environment Setup**
 
-## **Cloud Apache Kafka Terraform**
+## **Cloud Infra Setup for Apache Kafka Using Terraform**
 Under terrform folder
 * `terraform/aws`
 * `terraform/oci`
@@ -128,7 +129,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
 
-```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMaker.yml```
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMaker.yml```
 
 ### **To upgrade cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
@@ -140,13 +141,15 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/group_vars/kafka-mirror-maker.yml``` .
 
-```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRemoveNodes.yml```
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMakerRemoveNodes.yml```
 
 ### **Rolling restart cluster**
 
-```ansible-playbook -i inventory/<environment>/mirror-maker.ini clusterKafkaMirrorMakerRollingRestart.yml```
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMakerRollingRestart.yml```
 
-### **Install / Upgrade / Update Kafka Manager**
+### **Install / Upgrade / Update Kafka Manager ( CMAK )**
+**Ref:** `https://github.com/yahoo/kafka-manager/releases`
+
 * `inventory/<environment>/group_vars/kafka-manager.yml`
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaManager.yml```
@@ -154,6 +157,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 ### **Tested OS**
 * CentOS 7
 * RedHat 7
+* Ubuntu / Debain ( under progress, might work )
 
 ### **Tested Ansible Version**
 ```
