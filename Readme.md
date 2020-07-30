@@ -23,7 +23,7 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 # **Production Environment Setup**
 
 ## **Cloud Infra Setup for Apache Kafka Using Terraform**
-Under terrform folder
+
 * `terraform/aws`
 * `terraform/oci`
 
@@ -55,16 +55,18 @@ ansible-playbook -i inventory/<environment>/cluster.ini clusterConsumerMetricSet
 
 * **Sample Splunk Dashboards**
 ```
-these are under "files/splunk dashboards" folder.
+files/splunk-dashboards
 ```
 * **To add newrelic monitoring to cluster**
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterNewRelicSetup.yml```
 
 * **Sample NewRelic Dashboards**
+
 ```
-these are under "files/newrelic-dashboards" folder.
+files/newrelic-dashboards
 ```
+
 
 ### **To add new broker to cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
@@ -143,10 +145,11 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMakerRemoveNodes.yml```
 
-### **Rolling restart cluster**
+### **Rolling Restart cluster**
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaMirrorMakerRollingRestart.yml```
 
+## **Kafka Management / Operations**
 ### **Install / Upgrade / Update Kafka Manager ( CMAK )**
 **Ref:** `https://github.com/yahoo/kafka-manager/releases`
 
@@ -157,7 +160,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 ### **Tested OS**
 * CentOS 7
 * RedHat 7
-* Ubuntu / Debain ( under progress, might work )
+* Ubuntu / Debain ( under progress, might work :) )
 
 ### **Tested Ansible Version**
 ```
