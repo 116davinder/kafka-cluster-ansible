@@ -35,7 +35,7 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterSetup.yml```
 
-### Monitoring for Kafka Cluster
+### **Monitoring for Kafka & Mirror Maker Cluster**
 * **To add Custom monitoring to cluster**
 
 `roles/jmxMonitor/files/kafka-input.txt`
@@ -46,7 +46,9 @@ ansible-playbook -i inventory/<environment>/cluster.ini clusterJmxMonitoringSetu
 ```
 
 * **To add Custom Consumer Group monitoring to cluster**
+
 It will monitor consumer groups mentioned in below file.
+
 `roles/jmxMonitor/files/kafka-consumer-group-metric-input.txt`
 
 ```
