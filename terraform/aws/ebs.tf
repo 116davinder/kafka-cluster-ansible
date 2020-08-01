@@ -4,8 +4,9 @@ resource "aws_ebs_volume" "kafka" {
   size              = var.kafka_volume_size
 
   tags = {
-    Name = "kafka-${var.env}-${count.index}"
-    Env  = var.env
+    Name  = "kafka-data-vol-${var.env}-${count.index}"
+    Env   = var.env
+    Owner = "Terraform"
   }
 
 }

@@ -34,8 +34,14 @@ variable kafka_nodes {
 
 variable kafka_volume_size {
   type        = number
-  default     = 50
-  description = "how much size of kafka ebs volume is required?"
+  default     = 100
+  description = "how much size of kafka data volume is required?"
+}
+
+variable kafka_root_volume_size {
+  type        = number
+  default     = 10
+  description = "how much size of kafka root volume is required?"
 }
 
 variable kafka_ebs_attach_location {

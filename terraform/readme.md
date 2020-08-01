@@ -5,6 +5,7 @@ Use Terraform to create resources for kafka in AWS and Other Cloud Provider and 
 * update `aws/var.tf` file with your requirements and variables.
 * update your `~/.aws/credentials` file.
 * export `AWS_PROFILE=<your aws profile>`.
+* update `terraform/aws/data.tf` to include public/private subnets, default it looks for public subnets.
 * Run `terraform init` in `terraform/aws` folder.
 * Run `terraform plan` to see resources which will be created.
 * Run `terraform apply` to create resources.
@@ -24,7 +25,7 @@ Ref: https://www.terraform.io/docs/providers/oci/index.html
 ```
 $ terraform version
 Terraform v0.12.29
-+ provider.aws v2.70.0
++ provider.aws v3.0.0
 
 $ terraform version
 Terraform v0.12.29

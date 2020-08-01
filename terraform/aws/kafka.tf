@@ -7,13 +7,28 @@ resource "aws_instance" "kafka" {
   subnet_id     = element(data.aws_subnet.public_subnet.*.id, count.index)
   vpc_security_group_ids  = ["${aws_security_group.kafka_sg.id}"]
   
-  tags = {
-    Name = "kafka-${var.env}-${count.index}"
-    Env = var.env
+  root_block_device {
+    volume_type = "gp2"
+    volume_size = 10
   }
+
+  tags = {
+    Name  = "kafka-${var.env}-${count.index}"
+    Env   = var.env
+    Owner = "Terraform"
+  }
+
+  volume_tags = {
+    Name  = "kafka-root-vol-${var.env}-${count.index}"
+    Env   = var.env
+    Owner = "Terraform"
+  }
+
+  monitoring     = true
 
   availability_zone = data.aws_availability_zones.available.names[ count.index % length(data.aws_availability_zones.available.names) ]
   depends_on  = [aws_security_group.kafka_sg]
+
 }
 
 resource "aws_volume_attachment" "kafka_ebs_attach" {

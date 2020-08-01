@@ -64,3 +64,9 @@ kafkaLogRetentionHours: 168
 kafkaLogSegmentBytes: 2073741824                                # need to ask expert kafka, should we use default 1GB here or 2GB or more
 kafkalogRetentionCheckIntervalMs: 300000
 kafkaGroupInitRebalanceDelayMs: 3
+
+
+# Only for AWS Based Cluster
+kafka_ebs_device: /dev/xvdc
+kafka_ebs_device_fs: xfs
+kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"
