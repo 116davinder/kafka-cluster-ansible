@@ -1,51 +1,51 @@
 variable env {
-  type        = string
-  default     = "development"
-  description = "environment name"
+  type                    = string
+  default                 = "development"
+  description             = "environment name"
 }
 
 variable vpc_id {
-  type = string
-  default = "vpc-0935362fca368f01f"
+  type                    = string
+  default                 = "vpc-0935362fca368f01f"
 }
 
 variable subnet_id {
-  type = string
-  default = "subnet-00f117908461e14c4"
+  type                    = string
+  default                 = "subnet-00f117908461e14c4"
 }
 
 variable instance_type {
-  type        = string
-  default     = "t2.micro"
-  description = "Instance Type"
+  type                    = string
+  default                 = "t2.micro"
+  description             = "Instance Type"
 }
 
 variable key_name {
-  type        = string
-  default     = "davinder-test-terraform"
-  description = "aws ec2 ssh key pair name"
+  type                    = string
+  default                 = "davinder-test-terraform"
+  description             = "aws ec2 ssh key pair name"
 }
 
 variable kafka_nodes {
-  type        = number
-  default     = 3
-  description = "how many nodes of kafka cluster is required?"
+  type                    = number
+  default                 = 3
+  description             = "how many nodes of kafka cluster is required?"
 }
 
 variable kafka_volume_size {
-  type        = number
-  default     = 100
-  description = "how much size of kafka data volume is required?"
+  type                    = number
+  default                 = 100
+  description             = "how much size of kafka data volume is required?"
 }
 
 variable kafka_root_volume_size {
-  type        = number
-  default     = 10
-  description = "how much size of kafka root volume is required?"
+  type                    = number
+  default                 = 10
+  description             = "how much size of kafka root volume is required?"
 }
 
 variable kafka_ebs_attach_location {
-  type        = string
-  default     = "/dev/sdc"
-  description = "disk location in linux machine"
+  type                    = string
+  default                 = "/dev/sdc"
+  description             = "disk location in linux machine"
 }
