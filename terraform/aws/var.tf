@@ -1,3 +1,9 @@
+variable region {
+  type                    = string
+  default                 = "eu-central-1"
+  description             = "AWS Region"
+}
+
 variable env {
   type                    = string
   default                 = "development"
@@ -28,13 +34,13 @@ variable key_name {
 
 variable kafka_nodes {
   type                    = number
-  default                 = 3
+  default                 = 1
   description             = "how many nodes of kafka cluster is required?"
 }
 
 variable kafka_volume_size {
   type                    = number
-  default                 = 100
+  default                 = 30
   description             = "how much size of kafka data volume is required?"
 }
 
@@ -48,4 +54,10 @@ variable kafka_ebs_attach_location {
   type                    = string
   default                 = "/dev/sdc"
   description             = "disk location in linux machine"
+}
+
+variable ec2_cloudwatch_role {
+  type                    = string
+  default                 = "Kafka-CloudWatchAgentServerRole"
+  description             = "aws ec2 cloudwatch role"
 }

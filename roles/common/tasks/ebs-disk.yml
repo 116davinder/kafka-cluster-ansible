@@ -7,23 +7,23 @@
   ignore_errors: true
 
 - name: check filesystem on given device
-  command: file -s "{{ kafka_ebs_device }}"
+  command: file -s "{{ aws_kafka_ebs_device }}"
   register: kafka_ebs_device_status
 
 - name: create filesystem on given device
   filesystem:
-    fstype: "{{ kafka_ebs_device_fs }}"
-    dev: "{{ kafka_ebs_device }}"
+    fstype: "{{ aws_kafka_ebs_device_fs }}"
+    dev: "{{ aws_kafka_ebs_device }}"
   when: kafka_ebs_device_status.stdout | regex_search(' data')
 
 - name: create kafka ebs mount dir
   file:
-    path: "{{ kafka_ebs_device_mount_location }}"
+    path: "{{ aws_kafka_ebs_device_mount_location }}"
     state: directory
 
 - name: mount kafka ebs volume
   mount:
-    path: "{{ kafka_ebs_device_mount_location }}"
-    src: "{{ kafka_ebs_device }}"
+    path: "{{ aws_kafka_ebs_device_mount_location }}"
+    src: "{{ aws_kafka_ebs_device }}"
     fstype: xfs
     state: mounted

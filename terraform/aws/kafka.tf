@@ -16,18 +16,18 @@ resource "aws_instance" "kafka" {
     Name                  = "kafka-${var.env}-${count.index}"
     Env                   = var.env
     Owner                 = "Terraform"
+    Software              = "Apache Kafka"
   }
 
   volume_tags = {
-    Name                  = "kafka-root-vol-${var.env}-${count.index}"
-    Env                   = var.env
     Owner                 = "Terraform"
   }
 
-  monitoring              = true
+  monitoring              = false
 
   availability_zone       = data.aws_availability_zones.available.names[ count.index % length(data.aws_availability_zones.available.names) ]
-  depends_on              = [aws_security_group.kafka_sg]
+  iam_instance_profile    = var.ec2_cloudwatch_role
+  depends_on              = [aws_security_group.kafka_sg,aws_iam_instance_profile.Kafka-CloudWatchAgentServerRole-Profile]
 
 }
 

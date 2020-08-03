@@ -29,6 +29,19 @@ https://github.com/116davinder/zookeeper-cluster-ansible
 
 ## **Apache Kafka Playbooks**
 
+### **AWS Cloud PreSetup for cluster**
+It will enable following things on all nodes.
+
+1. `/kafka` mount point from ebs created by terraform.
+2. Install and configure `awslogs` agent for kafka-logs.
+3. Install python3 packages
+
+* Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
+* Update Required vars in ```inventory/<environment>/cluster.ini``` .
+
+```ansible-playbook -i inventory/<environment>/cluster.ini clusterAwsPreSetup.yml```
+
+
 ### **To start new cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .
 * Update Required vars in ```inventory/<environment>/cluster.ini``` .

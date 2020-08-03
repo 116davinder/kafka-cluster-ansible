@@ -67,6 +67,7 @@ kafkaGroupInitRebalanceDelayMs: 3
 
 
 # Only for AWS Based Cluster
-kafka_ebs_device: /dev/xvdc
-kafka_ebs_device_fs: xfs
-kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"
+aws_kafka_ec2_region: "eu-central-1"
+aws_kafka_ebs_device: /dev/xvdc
+aws_kafka_ebs_device_fs: xfs
+aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"

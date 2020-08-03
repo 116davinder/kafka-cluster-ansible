@@ -1,0 +1,23 @@
+---
+
+- hosts: clusterNodes
+  gather_facts: true
+  tasks:
+    - name: mount ebs volume
+      include_role:
+        name: common
+        tasks_from: ebs-disk.yml
+
+    - name: install & configure cloudwatch logs agent
+      include_role:
+        name: cloudwatch
+    
+    - name: install python3* packages and dependencies
+      package:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - python3
+        - python3-pip
+        - python3-devel
+        - gcc

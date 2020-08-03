@@ -1,0 +1,32 @@
+---
+
+- name: install awslogs agents
+  package:
+    name: awslogs
+    state: latest
+    update_cache: true
+
+- name: update location for kafka-logs in cloudwtch agent conf
+  blockinfile:
+      path: /etc/awslogs/awslogs.conf
+      block: |
+        [cloudwatch-kafka-logs]
+        time_zone = LOCAL
+        datetime_format = %b %d %H:%M:%S
+        file = {{ kafkaInstallDir }}/kafka-logs/*.log
+        buffer_duration = 5000
+        log_stream_name = {instance_id}
+        initial_position = start_of_file
+        log_group_name = cloudwatch-kafka-logs
+
+- name: update aws region of clouwatch agent
+  lineinfile:
+    path: /etc/awslogs/awscli.conf
+    regexp: '^region ='
+    line: "region = {{ aws_kafka_ec2_region }}"
+
+- name: service enable awslogsd
+  service:
+    name: awslogsd
+    state: restarted
+    enabled: true

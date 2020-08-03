@@ -1,9 +1,0 @@
----
-
-- hosts: clusterNodes
-  gather_facts: true
-  tasks:
-    - name: include ebs role
-      include_role:
-        name: common
-        tasks_from: ebs-disk.yml
