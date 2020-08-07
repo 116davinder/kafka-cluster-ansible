@@ -35,6 +35,7 @@ kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec
+kafka.server:type=KafkaServer,name=*
 kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
 kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
 kafka.server:type=ReplicaManager,name=UnderMinIsrPartitionCount
