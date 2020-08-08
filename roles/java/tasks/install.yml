@@ -13,9 +13,10 @@
     - "java-1.{{ javaVersion }}.0-openjdk"
     - "java-1.{{ javaVersion }}.0-openjdk-devel"
   when:
-    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
     - javaVersion | int < 9
 
+# TODO: Java 9 & 10 packages are not avilable
 - name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is greater than 9
   yum:
     name: "{{ item }}"
@@ -25,7 +26,7 @@
     - "java-{{ javaVersion }}-openjdk"
     - "java-{{ javaVersion }}-openjdk-devel"
   when:
-    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
     - javaVersion | int >= 9
 
 - name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
