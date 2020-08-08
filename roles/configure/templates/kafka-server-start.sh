@@ -45,7 +45,11 @@ esac
 export KAFKA_OOM_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath={{ kafkaLogDir }} "
 
 # kafka gc logs settings
-export KAFKA_GC_LOG_OPTS="-Xloggc:{{ kafkaLogDir }}/kafkaServer-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M"
+{% if javaVersion > 9 %}
+export KAFKA_GC_LOG_OPTS="-Xlog:gc*:file={{ kafkaLogDir }}/kafkaServer-gc.log:time,tags:filecount=10,filesize=1024"
+{% else %}
+export KAFKA_GC_LOG_OPTS="-Xloggc:{{ kafkaLogDir }}/kafkaServer-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M"
+{% endif %}
 
 # kafka jmx settings
 export KAFKA_JMX_OPTS="-Djava.rmi.server.hostname={{ ansible_default_ipv4['address'] | default('0.0.0.0') }} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.rmi.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
