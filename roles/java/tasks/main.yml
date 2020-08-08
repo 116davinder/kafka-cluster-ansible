@@ -7,12 +7,16 @@
   changed_when: false
 
 - include_tasks: install.yml
-  when: javaRequired is failed
+  when: javaRequired is failed or updateJava
 
-- name: Checking if Java_home setting is needed
-  command:  /bin/bash -l -c "echo $JAVA_HOME"
-  register: checkJavaHome
-  changed_when: false
+# Not Required
+# As System Admin Team might upgrade Java Part of Patch Cycle
+# old version of java might cause issue.
 
-- include_tasks: javaHome.yml
-  when: checkJavaHome.stdout == ''
+#- name: Checking if Java_home setting is needed
+#   command:  /bin/bash -l -c "echo $JAVA_HOME"
+#   register: checkJavaHome
+#   changed_when: false
+
+# - include_tasks: javaHome.yml
+#   when: checkJavaHome.stdout == ''
