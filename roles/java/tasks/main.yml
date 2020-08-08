@@ -7,7 +7,7 @@
   changed_when: false
 
 - include_tasks: install.yml
-  when: javaRequired is failed
+  when: javaRequired is failed or updateJava
 
 - name: Checking if Java_home setting is needed
   command:  /bin/bash -l -c "echo $JAVA_HOME"
