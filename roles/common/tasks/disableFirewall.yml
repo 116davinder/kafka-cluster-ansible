@@ -9,7 +9,7 @@
       name: firewalld
       enabled: false
       state: stopped
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
 
 - name: taking iptables backup | /opt/iptables-{{ ansible_date_time.date }}.bak
   shell: "iptables-save > /opt/iptables-{{ ansible_date_time.date }}.bak"
