@@ -172,6 +172,9 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterKafkaManager.yml```
 
+### **Kafka Tested Version**
+* 2.x
+
 ### **Tested OS**
 * CentOS 7
 * RedHat 7
