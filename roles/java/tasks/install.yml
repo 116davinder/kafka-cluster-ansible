@@ -4,7 +4,7 @@
     javaUpdateState: latest
   when: updateJava
 
-- name: Install Openjdk | {{ javaVersion }} | RedHat
+- name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is less than 9
   yum:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
@@ -12,7 +12,21 @@
   loop:
     - "java-1.{{ javaVersion }}.0-openjdk"
     - "java-1.{{ javaVersion }}.0-openjdk-devel"
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when:
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - javaVersion | int < 9
+
+- name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is greater than 9
+  yum:
+    name: "{{ item }}"
+    state: "{{ javaUpdateState | default('present') }}"
+    update_cache: true
+  loop:
+    - "java-{{ javaVersion }}-openjdk"
+    - "java-{{ javaVersion }}-openjdk-devel"
+  when:
+    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    - javaVersion | int >= 9
 
 - name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
   apt:
