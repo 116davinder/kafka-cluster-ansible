@@ -1,4 +1,4 @@
-<form>
+<form theme="dark">
   <label>Apache Kafka Consumer Metrics</label>
   <fieldset submitButton="false">
     <input type="dropdown" token="env">
@@ -45,7 +45,7 @@
       <title>Consumer Group Lag ( Per Partition )</title>
       <chart>
         <search>
-          <query>index=kafka source="/kafka/kafka-logs/kafka-consumer-group-metrics.log"
+          <query>index=kafka source="/kafka/kafka-logs/kafka-consumer-group-metrics.log" 
 group_id=$group_id$ env=$env$ topic=$topic$
 | table _time, group_id, partition.*.lag</query>
           <earliest>$time_range.earliest$</earliest>
