@@ -6,7 +6,7 @@
     - name: mount ebs volume
       include_role:
         name: common
-        tasks_from: ebs-disk.yml
+        tasks_from: ebsDisk.yml
 
     - name: install & configure cloudwatch logs agent
       include_role:
