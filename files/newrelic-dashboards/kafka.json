@@ -414,7 +414,7 @@
 				"column": 7
 			},
 			"widget_id": 11696423,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=RequestChannel,name=RequestQueueSize'"
 			}],
@@ -431,7 +431,7 @@
 				"column": 1
 			},
 			"widget_id": 11696424,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=SocketServer,name=NetworkProcessorAvgIdlePercent'"
 			}],
@@ -448,7 +448,7 @@
 				"column": 7
 			},
 			"widget_id": 11696425,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`OneMinuteRate`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent'"
 			}],
@@ -465,7 +465,7 @@
 				"column": 1
 			},
 			"widget_id": 11696426,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`HeapMemoryUsage.Max`/1000000000) as 'HeapMemoryUsage.Max',latest(`HeapMemoryUsage.Used`/1000000000) as 'HeapMemoryUsage.Used',latest(`NonHeapMemoryUsage.Used`/1000000000) as 'NonHeapMemoryUsage.Used' from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Memory'"
 			}],
@@ -482,7 +482,7 @@
 				"column": 1
 			},
 			"widget_id": 11696427,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`CollectionCount`),latest(`CollectionTime`/1000) as 'CollectionTimeInSeconds' from kafkaMonitoring TIMESERIES FACET host,`key:name` where bean LIKE 'type=GarbageCollector,name=%'"
 			}],
@@ -499,7 +499,7 @@
 				"column": 5
 			},
 			"widget_id": 11696428,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`PeakThreadCount`) ,latest(`ThreadCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Threading'"
 			}],
@@ -516,7 +516,7 @@
 				"column": 9
 			},
 			"widget_id": 11696429,
-			"account_id": 1483868,
+			"account_id": XXXXXXX,
 			"data": [{
 				"nrql": "SELECT latest(`LoadedClassCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=ClassLoading'"
 			}],
