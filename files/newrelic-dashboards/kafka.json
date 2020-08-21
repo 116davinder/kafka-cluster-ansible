@@ -1,1 +1,533 @@
-{"dashboard":{"id":YYYYYYY,"title":"Apache Kafka","description":"","icon":"bar-chart","created_at":"2019-08-16T09:31:57Z","updated_at":"2019-09-20T08:48:25Z","visibility":"all","editable":"editable_by_owner","ui_url":"https://insights.newrelic.com/accounts/XXXXXXX/dashboards/YYYYYYY","api_url":"https://api.newrelic.com/v2/dashboards/YYYYYYY","owner_email":"dpsangal@gmail.com","metadata":{"version":1},"widgets":[{"visualization":"faceted_line_chart","layout":{"width":4,"height":3,"row":1,"column":1},"widget_id":11696402,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(cpuPercent) FROM SystemSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE  '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' AND `fullHostname` NOT LIKE '%mirror%' LIMIT 100 SINCE 60 minutes ago"}],"presentation":{"title":"System CPU Percentage","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":3,"row":1,"column":5},"widget_id":11696403,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(memoryUsedBytes/memoryTotalBytes*100) FROM SystemSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' AND hostname NOT LIKE '%mirror%'"}],"presentation":{"title":"System Memory Percentage","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":3,"row":1,"column":9},"widget_id":11696404,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(diskUsedPercent) FROM StorageSample TIMESERIES FACET `fullHostname`, `mountPoint` WHERE `fullHostname` LIKE '%kafka%' AND `mountPoint` = '/kafka' and hostname NOT LIKE '%mirror%' SINCE 60 minutes ago"}],"presentation":{"title":"System Disk Used Percentage","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":12,"height":4,"row":4,"column":1},"widget_id":11696405,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(receiveBytesPerSecond/1000000) as 'receiveMegaBytesPerSecond',latest(transmitBytesPerSecond/1000000) as 'transmitMegaBytesPerSecond' FROM NetworkSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' and `fullHostname` not like '%mirror%'"}],"presentation":{"title":"System Network Mega Bytes/Sec","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":8,"column":1},"widget_id":11834832,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET bean,host  where bean LIKE 'type=Log,name=NumLogSegments,topic=%,partition=%' and bean not like 'type=Log,name=%,topic=__%'"}],"presentation":{"title":"Number of Log Segments ( per topic & per partition )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":8,"column":7},"widget_id":11834896,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(Value)/1000000 from kafkaMonitoring TIMESERIES FACET bean,host  where bean LIKE 'type=Log,name=Size,topic=%,partition=%' and bean not like 'type=Log,name=%,topic=__%'"}],"presentation":{"title":"Size of Log Segments ( per topic & per partition )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":12,"column":1},"widget_id":11696406,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET host,`key:name`  where bean like 'type=KafkaController,name=%'"}],"presentation":{"title":"Kafka Controller","notes":"Number of partitions that don't have an active leader and are hence not writable or readable. Alert if value is greater than 0."}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":12,"column":7},"widget_id":11696407,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET host,`key:name`  where bean like 'type=ReplicaManager,name=%'"}],"presentation":{"title":"Replica Manager","notes":"Number of active controllers in the cluster. Alert if the aggregated sum across all brokers in the cluster is anything other than 1 because there should be exactly one controller per cluster."}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":16,"column":1},"widget_id":11696409,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean LIKE 'type=BrokerTopicMetrics,name=MessagesInPerSec'"}],"presentation":{"title":"Broker Msgs ( 1 Min Rate )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":16,"column":5},"widget_id":11696410,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=SessionExpireListener,name=%'"}],"presentation":{"title":"Kafka Zookeeper Connections Stats ( 1 Min Rate )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":16,"column":9},"widget_id":11696408,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(OneMinuteRate/1000000) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=BrokerTopicMetrics,name=bytes%'"}],"presentation":{"title":"Broker  Network In/Out Stats ( MB/min Rate )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":20,"column":1},"widget_id":11696412,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=BrokerTopicMetrics,name=%RequestsPerSec'"}],"presentation":{"title":"Kafka Requests Stats ( 1 Min Rate )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":20,"column":5},"widget_id":11696413,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=TotalTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( TotalTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":20,"column":9},"widget_id":11696411,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=ControllerStats,name=%'"}],"presentation":{"title":"Leader Election Status ( 1 Min Rate )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":24,"column":1},"widget_id":11696415,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=RemoteTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( RemoteTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":24,"column":5},"widget_id":11696414,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=RequestQueueTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( RequestQueueTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":24,"column":9},"widget_id":11696416,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=ResponseQueueTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( ResponseQueueTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":28,"column":1},"widget_id":11696418,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=LocalTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( ResponseSendTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":28,"column":5},"widget_id":11696419,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=ReplicaFetcherManager,name=MaxLag,clientId=Replica'"}],"presentation":{"title":"Replica Fetcher Manager ( Replica Max Lag )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":28,"column":9},"widget_id":11696417,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=LocalTimeMs,request=%'"}],"presentation":{"title":"Request Metrics ( LocalTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":32,"column":1},"widget_id":11696420,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`50thPercentile`),latest(`99thPercentile`),latest(`Max`),latest(`Min`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=LogFlushStats,name=LogFlushRateAndTimeMs'"}],"presentation":{"title":"Log Flush Stats ( LogFlushRateAndTimeMs )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":32,"column":7},"widget_id":11696421,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET `key:delayedOperation`,host where bean LIKE 'type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=%'"}],"presentation":{"title":"Delayed Operation Purgatory","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":36,"column":1},"widget_id":11696422,"account_id":XXXXXXX,"data":[{"nrql":"SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET `key:topic`,host where `key:topic` NOT LIKE '__%'  AND  bean LIKE 'type=FetcherLagMetrics,name=ConsumerLag,clientId=%,topic=%,partition=%'"}],"presentation":{"title":"Lag in follower Replica Per Topic ","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":36,"column":7},"widget_id":11696423,"account_id":1483868,"data":[{"nrql":"SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=RequestChannel,name=RequestQueueSize'"}],"presentation":{"title":"Request Channel ( RequestQueueSize )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":40,"column":1},"widget_id":11696424,"account_id":1483868,"data":[{"nrql":"SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=SocketServer,name=NetworkProcessorAvgIdlePercent'"}],"presentation":{"title":"Socket Server ( NetworkProcessorAvgIdlePercent )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":6,"height":4,"row":40,"column":7},"widget_id":11696425,"account_id":1483868,"data":[{"nrql":"SELECT latest(`OneMinuteRate`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent'"}],"presentation":{"title":"Kafka Request Handler Pool ( RequestHandlerAvgIdlePercent / Min)","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":12,"height":5,"row":44,"column":1},"widget_id":11696426,"account_id":1483868,"data":[{"nrql":"SELECT latest(`HeapMemoryUsage.Max`/1000000000) as 'HeapMemoryUsage.Max',latest(`HeapMemoryUsage.Used`/1000000000) as 'HeapMemoryUsage.Used',latest(`NonHeapMemoryUsage.Used`/1000000000) as 'NonHeapMemoryUsage.Used' from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Memory'"}],"presentation":{"title":"JVM Stats ( GB )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":49,"column":1},"widget_id":11696427,"account_id":1483868,"data":[{"nrql":"SELECT latest(`CollectionCount`),latest(`CollectionTime`/1000) as 'CollectionTimeInSeconds' from kafkaMonitoring TIMESERIES FACET host,`key:name` where bean LIKE 'type=GarbageCollector,name=%'"}],"presentation":{"title":"Garbage Collector ( CollectionCount, CollectionTimeInSeconds )","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":49,"column":5},"widget_id":11696428,"account_id":1483868,"data":[{"nrql":"SELECT latest(`PeakThreadCount`) ,latest(`ThreadCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Threading'"}],"presentation":{"title":"JVM Threads","notes":null}},{"visualization":"faceted_line_chart","layout":{"width":4,"height":4,"row":49,"column":9},"widget_id":11696429,"account_id":1483868,"data":[{"nrql":"SELECT latest(`LoadedClassCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=ClassLoading'"}],"presentation":{"title":"JVM Loaded Classes","notes":null}}],"filter":{"event_types":["SystemSample","StorageSample","NetworkSample","kafkaMonitoring"],"attributes":[]}}}
+{
+	"dashboard": {
+		"id": YYYYYYY,
+		"title": "Apache Kafka",
+		"description": "",
+		"icon": "bar-chart",
+		"created_at": "2019-08-16T09:31:57Z",
+		"updated_at": "2019-09-20T08:48:25Z",
+		"visibility": "all",
+		"editable": "editable_by_owner",
+		"ui_url": "https://insights.newrelic.com/accounts/XXXXXXX/dashboards/YYYYYYY",
+		"api_url": "https://api.newrelic.com/v2/dashboards/YYYYYYY",
+		"owner_email": "dpsangal@gmail.com",
+		"metadata": {
+			"version": 1
+		},
+		"widgets": [{
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 3,
+				"row": 1,
+				"column": 1
+			},
+			"widget_id": 11696402,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(cpuPercent) FROM SystemSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE  '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' AND `fullHostname` NOT LIKE '%mirror%' LIMIT 100 SINCE 60 minutes ago"
+			}],
+			"presentation": {
+				"title": "System CPU Percentage",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 3,
+				"row": 1,
+				"column": 5
+			},
+			"widget_id": 11696403,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(memoryUsedBytes/memoryTotalBytes*100) FROM SystemSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' AND hostname NOT LIKE '%mirror%'"
+			}],
+			"presentation": {
+				"title": "System Memory Percentage",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 3,
+				"row": 1,
+				"column": 9
+			},
+			"widget_id": 11696404,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(diskUsedPercent) FROM StorageSample TIMESERIES FACET `fullHostname`, `mountPoint` WHERE `fullHostname` LIKE '%kafka%' AND `mountPoint` = '/kafka' and hostname NOT LIKE '%mirror%' SINCE 60 minutes ago"
+			}],
+			"presentation": {
+				"title": "System Disk Used Percentage",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 12,
+				"height": 4,
+				"row": 4,
+				"column": 1
+			},
+			"widget_id": 11696405,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(receiveBytesPerSecond/1000000) as 'receiveMegaBytesPerSecond',latest(transmitBytesPerSecond/1000000) as 'transmitMegaBytesPerSecond' FROM NetworkSample TIMESERIES FACET `fullHostname` WHERE `fullHostname` LIKE '%kafka%' AND `fullHostname` NOT LIKE '%kafkamgt%' and `fullHostname` not like '%mirror%'"
+			}],
+			"presentation": {
+				"title": "System Network Mega Bytes/Sec",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 8,
+				"column": 1
+			},
+			"widget_id": 11834832,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET bean,host  where bean LIKE 'type=Log,name=NumLogSegments,topic=%,partition=%' and bean not like 'type=Log,name=%,topic=__%'"
+			}],
+			"presentation": {
+				"title": "Number of Log Segments ( per topic & per partition )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 8,
+				"column": 7
+			},
+			"widget_id": 11834896,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(Value)/1000000 from kafkaMonitoring TIMESERIES FACET bean,host  where bean LIKE 'type=Log,name=Size,topic=%,partition=%' and bean not like 'type=Log,name=%,topic=__%'"
+			}],
+			"presentation": {
+				"title": "Size of Log Segments ( per topic & per partition )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 12,
+				"column": 1
+			},
+			"widget_id": 11696406,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET host,`key:name`  where bean like 'type=KafkaController,name=%'"
+			}],
+			"presentation": {
+				"title": "Kafka Controller",
+				"notes": "Number of partitions that don't have an active leader and are hence not writable or readable. Alert if value is greater than 0."
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 12,
+				"column": 7
+			},
+			"widget_id": 11696407,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(Value) from kafkaMonitoring TIMESERIES FACET host,`key:name`  where bean like 'type=ReplicaManager,name=%'"
+			}],
+			"presentation": {
+				"title": "Replica Manager",
+				"notes": "Number of active controllers in the cluster. Alert if the aggregated sum across all brokers in the cluster is anything other than 1 because there should be exactly one controller per cluster."
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 16,
+				"column": 1
+			},
+			"widget_id": 11696409,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean LIKE 'type=BrokerTopicMetrics,name=MessagesInPerSec'"
+			}],
+			"presentation": {
+				"title": "Broker Msgs ( 1 Min Rate )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 16,
+				"column": 5
+			},
+			"widget_id": 11696410,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=SessionExpireListener,name=%'"
+			}],
+			"presentation": {
+				"title": "Kafka Zookeeper Connections Stats ( 1 Min Rate )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 16,
+				"column": 9
+			},
+			"widget_id": 11696408,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(OneMinuteRate/1000000) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=BrokerTopicMetrics,name=bytes%'"
+			}],
+			"presentation": {
+				"title": "Broker  Network In/Out Stats ( MB/min Rate )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 20,
+				"column": 1
+			},
+			"widget_id": 11696412,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=BrokerTopicMetrics,name=%RequestsPerSec'"
+			}],
+			"presentation": {
+				"title": "Kafka Requests Stats ( 1 Min Rate )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 20,
+				"column": 5
+			},
+			"widget_id": 11696413,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=TotalTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( TotalTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 20,
+				"column": 9
+			},
+			"widget_id": 11696411,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(OneMinuteRate) from kafkaMonitoring TIMESERIES FACET `key:name`,host where bean like 'type=ControllerStats,name=%'"
+			}],
+			"presentation": {
+				"title": "Leader Election Status ( 1 Min Rate )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 24,
+				"column": 1
+			},
+			"widget_id": 11696415,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=RemoteTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( RemoteTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 24,
+				"column": 5
+			},
+			"widget_id": 11696414,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=RequestQueueTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( RequestQueueTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 24,
+				"column": 9
+			},
+			"widget_id": 11696416,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=ResponseQueueTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( ResponseQueueTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 28,
+				"column": 1
+			},
+			"widget_id": 11696418,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=LocalTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( ResponseSendTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 28,
+				"column": 5
+			},
+			"widget_id": 11696419,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=ReplicaFetcherManager,name=MaxLag,clientId=Replica'"
+			}],
+			"presentation": {
+				"title": "Replica Fetcher Manager ( Replica Max Lag )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 28,
+				"column": 9
+			},
+			"widget_id": 11696417,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`) from kafkaMonitoring TIMESERIES FACET `key:request`,host where bean like 'type=RequestMetrics,name=LocalTimeMs,request=%'"
+			}],
+			"presentation": {
+				"title": "Request Metrics ( LocalTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 32,
+				"column": 1
+			},
+			"widget_id": 11696420,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`50thPercentile`),latest(`99thPercentile`),latest(`Max`),latest(`Min`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=LogFlushStats,name=LogFlushRateAndTimeMs'"
+			}],
+			"presentation": {
+				"title": "Log Flush Stats ( LogFlushRateAndTimeMs )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 32,
+				"column": 7
+			},
+			"widget_id": 11696421,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET `key:delayedOperation`,host where bean LIKE 'type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=%'"
+			}],
+			"presentation": {
+				"title": "Delayed Operation Purgatory",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 36,
+				"column": 1
+			},
+			"widget_id": 11696422,
+			"account_id": XXXXXXX,
+			"data": [{
+				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET `key:topic`,host where `key:topic` NOT LIKE '__%'  AND  bean LIKE 'type=FetcherLagMetrics,name=ConsumerLag,clientId=%,topic=%,partition=%'"
+			}],
+			"presentation": {
+				"title": "Lag in follower Replica Per Topic ",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 36,
+				"column": 7
+			},
+			"widget_id": 11696423,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=RequestChannel,name=RequestQueueSize'"
+			}],
+			"presentation": {
+				"title": "Request Channel ( RequestQueueSize )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 40,
+				"column": 1
+			},
+			"widget_id": 11696424,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`Value`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=SocketServer,name=NetworkProcessorAvgIdlePercent'"
+			}],
+			"presentation": {
+				"title": "Socket Server ( NetworkProcessorAvgIdlePercent )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 6,
+				"height": 4,
+				"row": 40,
+				"column": 7
+			},
+			"widget_id": 11696425,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`OneMinuteRate`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent'"
+			}],
+			"presentation": {
+				"title": "Kafka Request Handler Pool ( RequestHandlerAvgIdlePercent / Min)",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 12,
+				"height": 5,
+				"row": 44,
+				"column": 1
+			},
+			"widget_id": 11696426,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`HeapMemoryUsage.Max`/1000000000) as 'HeapMemoryUsage.Max',latest(`HeapMemoryUsage.Used`/1000000000) as 'HeapMemoryUsage.Used',latest(`NonHeapMemoryUsage.Used`/1000000000) as 'NonHeapMemoryUsage.Used' from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Memory'"
+			}],
+			"presentation": {
+				"title": "JVM Stats ( GB )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 49,
+				"column": 1
+			},
+			"widget_id": 11696427,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`CollectionCount`),latest(`CollectionTime`/1000) as 'CollectionTimeInSeconds' from kafkaMonitoring TIMESERIES FACET host,`key:name` where bean LIKE 'type=GarbageCollector,name=%'"
+			}],
+			"presentation": {
+				"title": "Garbage Collector ( CollectionCount, CollectionTimeInSeconds )",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 49,
+				"column": 5
+			},
+			"widget_id": 11696428,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`PeakThreadCount`) ,latest(`ThreadCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=Threading'"
+			}],
+			"presentation": {
+				"title": "JVM Threads",
+				"notes": null
+			}
+		}, {
+			"visualization": "faceted_line_chart",
+			"layout": {
+				"width": 4,
+				"height": 4,
+				"row": 49,
+				"column": 9
+			},
+			"widget_id": 11696429,
+			"account_id": 1483868,
+			"data": [{
+				"nrql": "SELECT latest(`LoadedClassCount`) from kafkaMonitoring TIMESERIES FACET host where bean LIKE 'type=ClassLoading'"
+			}],
+			"presentation": {
+				"title": "JVM Loaded Classes",
+				"notes": null
+			}
+		}],
+		"filter": {
+			"event_types": ["SystemSample", "StorageSample", "NetworkSample", "kafkaMonitoring"],
+			"attributes": []
+		}
+	}
+}
