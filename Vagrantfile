@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   cluster_nodes=3
 
     (1..cluster_nodes).each do |i|
-      config.vm.define "zookeeper-#{i}" do |node|
+      config.vm.define "kafka-#{i}" do |node|
         node.vm.box = "centos/7"
         node.vm.hostname  = "kafka#{i}"
         node.vm.network :private_network, ip: "192.168.56.10#{i}"

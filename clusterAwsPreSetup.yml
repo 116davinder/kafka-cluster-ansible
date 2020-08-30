@@ -12,12 +12,7 @@
       include_role:
         name: cloudwatch
     
-    - name: install python3* packages and dependencies
-      package:
-        name: "{{ item }}"
-        state: latest
-      loop:
-        - python3
-        - python3-pip
-        - python3-devel
-        - gcc
+    - name: install common utils
+      include_role:
+        name: common
+        tasks_from: commonUtils.yml
