@@ -10,9 +10,10 @@ It is group of playbooks to manage apache kafka. It is also 100% compliant with 
 
 ## **Notes***
 ```
-1. It assumes you have zookeeper already running in localmode or cluster mode.
-2. All tasks like broker/jvm/logging/downgrade/removeOldVersion will be done in serial order.
-3. It doesn't support upgrading old kafka clusters from 0.9.0 to 2.x versions.
+1. why manual download of tar file because environments can be complex and there won't be any internet connection in production.
+2. It assumes you have zookeeper already running in localmode or cluster mode.
+3. All tasks like broker/jvm/logging/downgrade/removeOldVersion will be done in serial order.
+4. It doesn't support upgrading old kafka clusters from 0.9.0 to 2.x versions.
 ```
 
 ## **Extra**
