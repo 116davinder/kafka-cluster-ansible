@@ -8,4 +8,4 @@ updates:
   - package-ecosystem: "pip"
     directory: "/roles/jmxMonitor/files"
     schedule:
-      interval: "daily"
+      interval: "monthly"
