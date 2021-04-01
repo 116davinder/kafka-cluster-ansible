@@ -1,13 +1,13 @@
 ---
 
 - name: creating kafka group
-  group:
+  ansible.builtin.group:
     name: "{{  kafkaGroup }}"
     gid: "{{ kafkaGroupId }}"
     state: present
 
 - name: creating kafka user
-  user:
+  ansible.builtin.user:
     name: "{{ kafkaUser }}"
     comment: kafka Default User
     uid: "{{ kafkaUserId }}"

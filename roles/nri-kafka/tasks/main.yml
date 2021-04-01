@@ -1,9 +1,9 @@
 ---
 
-- include_tasks: packages.yml
+- ansible.builtin.include_tasks: packages.yml
 
 - name: copying newrelic integration config file
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/newrelic-infra/integrations.d/{{ item }}"
   loop:
@@ -12,6 +12,6 @@
     - kafka-metrics.yml
 
 - name: restarting newrelic infra agent
-  service:
+  ansible.builtin.service:
     name: newrelic-infra
     state: restarted

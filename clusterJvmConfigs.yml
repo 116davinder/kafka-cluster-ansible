@@ -4,12 +4,12 @@
   gather_facts: true
   serial: 1
   tasks:
-    - include_role:
+    - ansible.builtin.include_role:
         name: configure
         tasks_from: jvmSettings
 
     - name: Restarting all nodes
-      import_role:
+      ansible.builtin.import_role:
         name: serviceState
       vars:
         serviceName: kafka
@@ -17,7 +17,7 @@
       when: jvmConfigStatus.changed
 
     - name: kafka Port Status
-      include_role:
+      ansible.builtin.include_role:
         name: portCheck
       vars:
         portNumber: "{{ item }}"

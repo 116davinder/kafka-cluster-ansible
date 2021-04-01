@@ -1,7 +1,7 @@
 ---
 
 - name: OS Tunning
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     state: present
@@ -10,7 +10,7 @@
   ignore_errors: true
 
 - name: Networking Tunning
-  sysctl:
+  ansible.posix.sysctl:
     name: "{{ item.key }}"
     value: "{{ item.value }}"
     sysctl_set: yes
@@ -38,7 +38,7 @@
   ignore_errors: true
 
 - name: update ulimits
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/security/limits.conf
     block: |
       {{ kafkaUser }} hard core 0

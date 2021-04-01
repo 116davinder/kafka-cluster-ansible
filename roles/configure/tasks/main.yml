@@ -1,8 +1,8 @@
 ---
-- include_tasks: jvmSettings.yml
+- ansible.builtin.include_tasks: jvmSettings.yml
 
 - name: Creating kafka configurations
-  include_role:
+  ansible.builtin.include_role:
       name: configure
       tasks_from: dynamicConfigs.yml
   vars:

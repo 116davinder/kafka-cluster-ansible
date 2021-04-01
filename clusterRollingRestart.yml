@@ -5,14 +5,14 @@
   serial: 1
   tasks:
     - name: including restart tasks
-      import_role:
+      ansible.builtin.import_role:
         name: serviceState
       vars:
         serviceName: kafka
         serviceState: restarted
 
     - name: kafka port status
-      include_role:
+      ansible.builtin.include_role:
         name: portCheck
       vars:
         portNumber: "{{ item }}"

@@ -1,7 +1,7 @@
 ---
 
 - name: Install Common Utils
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:
@@ -11,7 +11,7 @@
     - wget
 
 - name: install python3* packages and dependencies
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
   loop:

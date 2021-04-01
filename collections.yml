@@ -1,0 +1,9 @@
+---
+
+collections:
+  - name: 'amazon.aws'
+    version: '1.4.1'
+  - name: 'community.aws'
+    version: '1.4.0'
+  - name: 'ansible.posix'
+    version: '1.2.0'

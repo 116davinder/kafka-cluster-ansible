@@ -1,7 +1,7 @@
 ---
 
 - name: stopping kafka mirror maker processes
-  include_role:
+  ansible.builtin.include_role:
     name: serviceState
   vars:
     serviceName: "kafka-mirror-maker-{{ item }}"
@@ -9,7 +9,7 @@
   loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
 
 - name: checking port status of kafka mirror maker processes
-  include_role:
+  ansible.builtin.include_role:
     name: portCheck
   vars:
     portNumber: "{{ kafkaMirrorMakerJmxInitialPort + item }}"
@@ -17,10 +17,10 @@
   loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
 
 - name: Removing all installation files for kafka mirror maker
-  command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
+  ansible.builtin.command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
 
 - name: Removing data & log dirs related to installation
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop:
@@ -30,4 +30,4 @@
     - "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
 
 - name: Removing all systemd files
-  command: "/bin/rm -rf /usr/lib/systemd/system/kafka*.service"
+  ansible.builtin.command: "/bin/rm -rf /usr/lib/systemd/system/kafka*.service"

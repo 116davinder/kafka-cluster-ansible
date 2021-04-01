@@ -4,15 +4,15 @@
   gather_facts: true
   tasks:
     - name: mount ebs volume
-      include_role:
+      ansible.builtin.include_role:
         name: common
         tasks_from: ebsDisk.yml
 
     - name: install & configure cloudwatch logs agent
-      include_role:
+      ansible.builtin.include_role:
         name: cloudwatch
-    
+
     - name: install common utils
-      include_role:
+      ansible.builtin.include_role:
         name: common
         tasks_from: commonUtils.yml

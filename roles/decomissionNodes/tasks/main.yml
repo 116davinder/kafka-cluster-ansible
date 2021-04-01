@@ -1,14 +1,14 @@
 ---
 
 - name: Stopping kafka service
-  import_role:
+  ansible.builtin.import_role:
     name: serviceState
   vars:
     serviceName: kafka
     serviceState: stopped
 
 - name: kafka Port Status
-  include_role:
+  ansible.builtin.include_role:
     name: portCheck
   vars:
     portNumber: "{{ item }}"
@@ -18,10 +18,10 @@
     - "{{ kafkaJmxPort }}"
 
 - name: Removing all installation files
-  command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
+  ansible.builtin.command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
 
 - name: Removing data & log dirs related to installation
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop:

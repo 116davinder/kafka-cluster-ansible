@@ -1,7 +1,7 @@
 ---
 
 - name: installing newrelic integration plugins ( Redhat / CentOS )
-  yum:
+  ansible.builtin.yum:
     name: "{{ item }}"
     state: present
   loop:
@@ -10,7 +10,7 @@
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: installing newrelic integration plugins ( Ubuntu / Debian )
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:

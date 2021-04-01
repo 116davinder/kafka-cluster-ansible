@@ -1,6 +1,6 @@
 ---
 - name: Creating kafka configurations | {{ kafkaConfigFile }}
-  template:
+  ansible.builtin.template:
     src: "{{ kafkaConfigFile }}"
     dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/config/{{ kafkaConfigFile }}"
   register: configStatus

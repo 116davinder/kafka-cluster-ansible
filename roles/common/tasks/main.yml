@@ -1,18 +1,18 @@
 ---
 
 - name: Installing common utils
-  include_tasks: commonUtils.yml
+  ansible.builtin.include_tasks: commonUtils.yml
 
 - name: Create user and group
-  include_tasks: createUser.yml
+  ansible.builtin.include_tasks: createUser.yml
 
 - name: Create kafka dir structure
-  include_tasks: createDirStructure.yml
+  ansible.builtin.include_tasks: createDirStructure.yml
 
 - name: System tuning tasks
-  include_tasks: systemTuning.yml
+  ansible.builtin.include_tasks: systemTuning.yml
 
 - name: Disable firewall
-  include_tasks: disableFirewall.yml
+  ansible.builtin.include_tasks: disableFirewall.yml
   ignore_errors: true
   when: not useSystemFirewall

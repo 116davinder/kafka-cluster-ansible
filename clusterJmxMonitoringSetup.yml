@@ -4,7 +4,7 @@
   gather_facts: true
   pre_tasks:
     - name: install gcc and python-devel ( Redhat / CentOS )
-      yum:
+      ansible.builtin.yum:
         name: "{{ item }}"
         state: present
       loop:
@@ -13,7 +13,7 @@
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
     - name: install gcc and python-devel ( Debain / Ubuntu )
-      apt:
+      ansible.builtin.apt:
         name: "{{ item }}"
         state: present
       loop:
@@ -22,7 +22,7 @@
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: copy jmxquery / psutil tar files
-      copy:
+      ansible.builtin.copy:
         src: "roles/jmxMonitor/files/{{ item }}"
         dest: "/tmp/{{ item }}"
       loop:
@@ -30,7 +30,7 @@
         - psutil-5.7.0.tar.gz
 
     - name: installing jmxquery / psutil with pip3
-      pip:
+      ansible.builtin.pip:
         name: /tmp/{{ item }}
         executable: pip3
       loop:
@@ -45,6 +45,6 @@
 - hosts: kafka-mirror-maker
   gather_facts: true
   tasks:
-    - include_role:
+    - ansible.builtin.include_role:
         name: jmxMonitor
         tasks_from: kafka-mirror-maker.yml

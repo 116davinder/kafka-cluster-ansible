@@ -1,7 +1,7 @@
 ---
 
 - name: kafka log dir clean up cron task
-  cron:
+  ansible.builtin.cron:
     name: "kafka log dir clean up cron task"
     minute: "0"
     hour: "0"

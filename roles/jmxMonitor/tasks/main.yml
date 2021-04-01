@@ -1,12 +1,12 @@
 ---
 
 - name: creating folder for jmx monitor
-  file:
+  ansible.builtin.file:
     path: "{{ kafkaInstallDir }}/jmxMonitor"
     state: directory
 
 - name: copying script and input files
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ kafkaInstallDir }}/jmxMonitor/{{ item }}"
   loop:
@@ -14,7 +14,7 @@
     - kafka-input.txt
 
 - name: kafka metric collector cron
-  cron:
+  ansible.builtin.cron:
     name: "kafka metric collector cron task"
     minute: "*"
     hour: "*"

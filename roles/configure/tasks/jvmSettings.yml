@@ -1,7 +1,7 @@
 ---
 
 - name: Creating kafka JVM configurations | kafka-server-start.sh
-  template:
+  ansible.builtin.template:
     src: "kafka-server-start.sh"
     dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/bin/kafka-server-start.sh"
     mode: 0775

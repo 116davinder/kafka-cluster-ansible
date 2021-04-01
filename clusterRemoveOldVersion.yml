@@ -5,12 +5,12 @@
   serial: 1
   tasks:
     - name: current kafka version
-      set_fact:
+      ansible.builtin.set_fact:
         kafkaCurrentVersion: "kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
         kafkaRemoveVersion: "kafka_{{ kafkaOldScalaVersion }}-{{ kafkaOldVersion }}"
-  
+
     - name: removing old kafka config files | {{ kafkaInstallDir }}/kafka_{{ kafkaOldScalaVersion }}-{{ kafkaOldVersion }}
-      file:
+      ansible.builtin.file:
         path: "{{ kafkaInstallDir }}/kafka_{{ kafkaOldScalaVersion }}-{{ kafkaOldVersion }}"
         state: absent
       when:

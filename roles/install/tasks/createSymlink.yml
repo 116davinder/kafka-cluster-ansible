@@ -1,7 +1,7 @@
 ---
 
 - name: Creating symlink to latest version | {{ kafkaVersion }}
-  file:
+  ansible.builtin.file:
     src: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
     dest: "{{ kafkaInstallDir }}/kafka"
     owner: "{{ kafkaUser }}"

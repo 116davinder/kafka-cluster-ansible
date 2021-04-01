@@ -1,7 +1,7 @@
 ---
 
 - name: Creating kafka Mirror Maker configurations | properties files
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/config/{{ item }}"
     owner: "{{ kafkaUser }}"
@@ -12,7 +12,7 @@
     - kafka-mirror-maker-producer.properties
 
 - name: Creating kafka Mirror Maker configurations | properties files
-  template:
+  ansible.builtin.template:
     src: "tools-log4j.properties"
     dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/config/kafka-mirror-log4j-{{ item }}.properties"
     owner: "{{ kafkaUser }}"
@@ -21,7 +21,7 @@
   loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"
 
 - name: Creating kafka Mirror Maker configurations | kafka-mirror-maker.sh
-  template:
+  ansible.builtin.template:
     src: kafka-mirror-maker.sh
     dest: "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}/bin/kafka-mirror-maker-{{ item }}.sh"
     owner: "{{ kafkaUser }}"

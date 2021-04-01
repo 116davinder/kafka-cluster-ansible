@@ -13,14 +13,14 @@
 
   post_tasks:
     - name: Starting additional nodes
-      import_role:
+      ansible.builtin.import_role:
         name: serviceState
       vars:
         serviceName: kafka
         serviceState: started
 
     - name: kafka Port Status
-      include_role:
+      ansible.builtin.include_role:
         name: portCheck
       vars:
         portNumber: "{{ item }}"

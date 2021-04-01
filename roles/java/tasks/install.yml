@@ -1,11 +1,11 @@
 ---
 - name: Setting java update true if required
-  set_fact:
+  ansible.builtin.set_fact:
     javaUpdateState: latest
   when: updateJava
 
 - name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is less than 9
-  yum:
+  ansible.builtin.yum:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
     update_cache: true
@@ -18,7 +18,7 @@
 
 # TODO: Java 9 & 10 packages are not avilable
 - name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is greater than 9
-  yum:
+  ansible.builtin.yum:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
     update_cache: true
@@ -30,7 +30,7 @@
     - javaVersion | int >= 9
 
 - name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
     update_cache: true

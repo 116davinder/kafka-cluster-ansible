@@ -1,6 +1,6 @@
 # Apache Kafka Ansible
 
-It is group of playbooks to manage apache kafka. It is also 100% compliant with ansible-lint rules.
+It is a group of playbooks to manage apache kafka.
 
 ## **Requirements**
 * Download Apache Kafka Tar on Ansible Server ( Mandatory )
@@ -183,10 +183,6 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ### **Tested Ansible Version**
 ```
-ansible 2.9.11
-  config file = None
-  configured module search path = ['/home/davinderpal/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.8/dist-packages/ansible
-  executable location = /usr/local/bin/ansible
-  python version = 3.8.2 (default, Jul 16 2020, 14:00:26) [GCC 9.3.0]
+ansible: 3.2.0
+ansible-base: 2.10.7
 ```

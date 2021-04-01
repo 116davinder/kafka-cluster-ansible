@@ -1,7 +1,7 @@
 ---
 
 - name: Setting kafka Home | /etc/profile.d/kafka.sh
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/profile.d/kafka.sh
     mode: 0775
     group: root

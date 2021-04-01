@@ -1,7 +1,7 @@
 ---
 
 # Notes:
-# New version of integration can be downloaded from below link 
+# New version of integration can be downloaded from below link
 # Redhat / CentOS: https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64
 # Ubuntu / Debain: https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/
 
@@ -11,12 +11,12 @@
   gather_facts: true
   pre_tasks:
     - name: checking newrelic infra agent status ( Redhat / CentOS )
-      shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
+      ansible.builtin.shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
       register: isNewRelicInfraInstalledYum
 
     - name: checking newrelic infra agent status ( Ubuntu / Debain )
-      shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
+      ansible.builtin.shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
       register: isNewRelicInfraInstalledApt
 
@@ -31,17 +31,17 @@
   gather_facts: true
   pre_tasks:
     - name: checking newrelic infra agent status ( Redhat / CentOS )
-      shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
+      ansible.builtin.shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
       register: isNewRelicInfraInstalledYum
 
     - name: checking newrelic infra agent status ( Ubuntu / Debain )
-      shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
+      ansible.builtin.shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
       register: isNewRelicInfraInstalledApt
 
   tasks:
-    - include_role:
+    - ansible.builtin.include_role:
         name: nri-kafka
         tasks_from: kafka-mirror-maker.yml
       when:

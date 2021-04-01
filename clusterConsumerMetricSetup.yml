@@ -4,14 +4,14 @@
   gather_facts: true
   tasks:
     - name: copy kafka-python package
-      copy:
+      ansible.builtin.copy:
         src: "roles/jmxMonitor/files/{{ item }}"
         dest: "/tmp/{{ item }}"
       loop:
         - kafka_python-2.0.1-py2.py3-none-any.whl
 
     - name: installing kafka_python with pip3
-      pip:
+      ansible.builtin.pip:
         name: /tmp/{{ item }}
         executable: pip3
       loop:

@@ -1,7 +1,7 @@
 ---
 
 - name: "{{ serviceName }} Service | {{ serviceState }}"
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ serviceName }}"
     state: "{{ serviceState }}"
     enabled: true

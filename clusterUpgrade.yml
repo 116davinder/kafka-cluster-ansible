@@ -10,12 +10,12 @@
   gather_facts: true
   tasks:
     - name: installing latest version of kafka
-      import_role:
+      ansible.builtin.import_role:
         name: install
         tasks_from: download
 
     - name: configuring latest kafka version
-      import_role:
+      ansible.builtin.import_role:
         name: configure
 
 - hosts: localhost
@@ -23,7 +23,7 @@
   gather_facts: false
   tasks:
     - name: Switching Kafka Version to {{ kafkaVersion }} on all nodes (Rolling fashion)
-      pause:
+      ansible.builtin.pause:
         prompt: "press enter to confirm or ctrl-c to cancel"
 
 - hosts: clusterNodes:clusterAddNodes
@@ -31,19 +31,19 @@
   serial: 1
   tasks:
     - name: switching kafka version to latest
-      import_role:
+      ansible.builtin.import_role:
         name: install
         tasks_from: createSymlink
-         
+
     - name: restarting all nodes
-      import_role:
+      ansible.builtin.import_role:
         name: serviceState
       vars:
         serviceName: kafka
         serviceState: restarted
 
     - name: kafka Port Status
-      include_role:
+      ansible.builtin.include_role:
         name: portCheck
       vars:
         portNumber: "{{ item }}"
