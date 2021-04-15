@@ -1,7 +1,7 @@
 ---
 
 javaVersion: 8
-updateJava: false # only when you need to update java version
+updateJava: false                                               # only when you need to update java version
 
 useSystemFirewall: false
 
@@ -44,8 +44,8 @@ kafkaOldScalaVersion: 2.12
 kafkaDefaultReplicationFactor: 3
 kafkaMinInsyncReplicas: "{{ kafkaDefaultReplicationFactor | int - 1 }}"
 kafkaBackgroundThread: 10
-kafkaMessagesMaxBytes: 1000012 # 1MB approx
-kafkaReplicaFetchMaxBytes: 2000000 # this should be higher than kafkaMessagesMaxBytes
+kafkaMessagesMaxBytes: 1000012                                    # 1MB approx
+kafkaReplicaFetchMaxBytes: 2000000                                # this should be higher than kafkaMessagesMaxBytes
 kafkaQuededMaxRequests: 500
 kafkaNumReplicaFetchers: 1
 kafkaNumNetworkThreads: 6
@@ -68,6 +68,6 @@ kafkaGroupInitRebalanceDelayMs: 3
 
 # Only for AWS Based Cluster
 aws_kafka_ec2_region: "eu-central-1"
-aws_kafka_ebs_device: /dev/xvdc
-aws_kafka_ebs_device_fs: xfs
+aws_kafka_ebs_device: "/dev/xvdc"
+aws_kafka_ebs_device_fs: "xfs"                                # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"

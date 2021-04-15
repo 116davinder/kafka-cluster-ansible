@@ -25,5 +25,5 @@
   ansible.posix.mount:
     path: "{{ aws_kafka_ebs_device_mount_location }}"
     src: "{{ aws_kafka_ebs_device }}"
-    fstype: xfs
+    fstype: "{{ aws_kafka_ebs_device_fs }}"
     state: mounted
