@@ -2,38 +2,22 @@ data "aws_iam_policy" "cloudwatchAgent" {
   arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-resource "aws_iam_role" "Kafka-CloudWatchAgentServerRole" {
-  name = var.ec2_cloudwatch_role
+resource "aws_iam_role" "this" {
+  count = local.create ? 1 : 0
+  name  = "kafka-cloud-watch-agent-role-${var.env}"
 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-    {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-        "Service": "ec2.amazonaws.com"
-        },
-        "Effect": "Allow",
-        "Sid": ""
-    }
-    ]
-}
-EOF
-
-  tags = {
-    Owner                 = "Terraform"
-  }
+  assume_role_policy = file("${path.module}/cloudwatch-agent-policy.json")
+  tags               = local.tags
 }
 
-resource "aws_iam_role_policy_attachment" "Kafka-CloudWatchAgentServerRole" {
-  role       = var.ec2_cloudwatch_role
+resource "aws_iam_role_policy_attachment" "this" {
+  count      = local.create ? 1 : 0
+  role       = aws_iam_role.this[0].name
   policy_arn = data.aws_iam_policy.cloudwatchAgent.arn
-
-  depends_on = [aws_iam_role.Kafka-CloudWatchAgentServerRole, data.aws_iam_policy.cloudwatchAgent]
 }
 
-resource "aws_iam_instance_profile" "Kafka-CloudWatchAgentServerRole-Profile" {
-  name = var.ec2_cloudwatch_role
-  role = aws_iam_role.Kafka-CloudWatchAgentServerRole.name
+resource "aws_iam_instance_profile" "this" {
+  count = local.create ? 1 : 0
+  name  = "kafka-cloud-watch-agent-profile-${var.env}"
+  role  = aws_iam_role.this[0].name
 }
