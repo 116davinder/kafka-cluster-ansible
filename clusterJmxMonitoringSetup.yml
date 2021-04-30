@@ -2,6 +2,7 @@
 
 - hosts: clusterNodes:clusterAddNodes:kafka-mirror-maker
   gather_facts: true
+  become: true
   pre_tasks:
     - name: install gcc and python-devel ( Redhat / CentOS )
       ansible.builtin.yum:

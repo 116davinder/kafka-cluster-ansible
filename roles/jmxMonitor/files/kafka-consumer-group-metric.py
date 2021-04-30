@@ -72,7 +72,7 @@ def main():
             try:
                 kc = KCMetric(topic.strip(), group_id.strip(), logDir, env)
                 if kc.checkConsumerGroupName():
-                    _t = threading.Thread(
+                    threading.Thread(
                         target=kc.getMetric
                     ).start()
             except:

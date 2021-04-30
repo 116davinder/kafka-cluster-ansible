@@ -22,12 +22,14 @@
 - name: Removing data & log dirs related to installation
   ansible.builtin.file:
     path: "{{ item }}"
-    state: absent
+    state: "absent"
   loop:
     - "{{ kafkaInstallDir }}/kafka"
     - "{{ kafkaDataDir }}"
     - "{{ kafkaLogDir }}"
     - "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+    - "{{ kafkaInstallDir }}/kafka_{{ kafkaOldVersion }}-{{ kafkaOldScalaVersion }}"
+    - "{{ kafkaInstallDir }}/jmxMonitor"
 
 - name: Removing all systemd files
-  ansible.builtin.command: "/bin/rm -rf /usr/lib/systemd/system/kafka*.service"
+  ansible.builtin.command: "/bin/rm -rf /usr/lib/systemd/system/kafka-mirror-maker*.service"

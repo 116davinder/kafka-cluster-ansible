@@ -5,25 +5,26 @@
     name: xfsprogs
     state: present
   ignore_errors: true
+  when: aws_kafka_ebs_device_fs | lower == "xfs"
 
-- name: check filesystem on given device
+- name: check filesystem on given device | {{ aws_kafka_ebs_device }}
   ansible.builtin.command: file -s "{{ aws_kafka_ebs_device }}"
   register: kafka_ebs_device_status
 
-- name: create filesystem on given device
+- name: create filesystem on given device | {{ aws_kafka_ebs_device }}
   community.general.filesystem:
     fstype: "{{ aws_kafka_ebs_device_fs }}"
     dev: "{{ aws_kafka_ebs_device }}"
   when: kafka_ebs_device_status.stdout | regex_search(' data')
 
-- name: create kafka ebs mount dir
+- name: create kafka ebs mount dir | {{ aws_kafka_ebs_device_mount_location }}
   ansible.builtin.file:
     path: "{{ aws_kafka_ebs_device_mount_location }}"
     state: directory
 
-- name: mount kafka ebs volume
+- name: mount kafka ebs volume | {{ aws_kafka_ebs_device_mount_location }}
   ansible.posix.mount:
     path: "{{ aws_kafka_ebs_device_mount_location }}"
     src: "{{ aws_kafka_ebs_device }}"
     fstype: "{{ aws_kafka_ebs_device_fs }}"
-    state: mounted
+    state: "mounted"

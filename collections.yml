@@ -1,6 +1,8 @@
 ---
 
 collections:
+  - name: 'community.general'
+    version: '2.5.1'
   - name: 'amazon.aws'
     version: '1.4.1'
   - name: 'community.aws'

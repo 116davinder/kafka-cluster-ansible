@@ -2,6 +2,7 @@
 
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: false
+  become: true
   serial: 1
   tasks:
     - name: current kafka version

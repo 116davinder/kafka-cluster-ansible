@@ -2,6 +2,7 @@
 
 - hosts: clusterNodes
   gather_facts: true
+  become: true
   roles:
     - java
     - common

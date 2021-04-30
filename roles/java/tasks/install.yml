@@ -1,10 +1,17 @@
 ---
+
+- name: 'Check Java Version Support'
+  ansible.builtin.fail:
+    msg: 'java version is not supported, please use, <= 8 or >= 11'
+  when:
+    - javaVersion | int in [9,10]
+
 - name: Setting java update true if required
   ansible.builtin.set_fact:
     javaUpdateState: latest
   when: updateJava
 
-- name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is less than 9
+- name: Install Openjdk | <= 8 | RedHat | if java version is less than 8
   ansible.builtin.yum:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
@@ -13,11 +20,11 @@
     - "java-1.{{ javaVersion }}.0-openjdk"
     - "java-1.{{ javaVersion }}.0-openjdk-devel"
   when:
-    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
-    - javaVersion | int < 9
+    - ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'RedHat'] | list
+    - javaVersion | int <= 8
 
-# TODO: Java 9 & 10 packages are not avilable
-- name: Install Openjdk | {{ javaVersion }} | RedHat | if java version is greater than 9
+# INFO: Java 9 & 10 packages are not avilable
+- name: Install Openjdk | >= 11 | RedHat | if java version is greater than 11
   ansible.builtin.yum:
     name: "{{ item }}"
     state: "{{ javaUpdateState | default('present') }}"
@@ -26,8 +33,8 @@
     - "java-{{ javaVersion }}-openjdk"
     - "java-{{ javaVersion }}-openjdk-devel"
   when:
-    - ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
-    - javaVersion | int >= 9
+    - ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'RedHat'] | list
+    - javaVersion | int >= 11
 
 - name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
   ansible.builtin.apt:
@@ -38,3 +45,16 @@
     - "openjdk-{{ javaVersion }}-jdk-headless"
     - "openjdk-{{ javaVersion }}-jdk"
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install Openjdk | <= 8 | Amazon | if java version is less than 8
+  ansible.builtin.command: "amazon-linux-extras install java-1.{{ javaVersion }}.0-openjdk"
+  when:
+    - ansible_distribution in ['Amazon'] | list
+    - javaVersion | int <= 8
+
+# INFO: Java 9 & 10 packages are not avilable
+- name: Install Openjdk | >= 11 | Amazon | if java version is greater than 11
+  ansible.builtin.command: "amazon-linux-extras install java-openjdk{{ javaVersion }}"
+  when:
+    - ansible_distribution in ['Amazon'] | list
+    - javaVersion | int >= 11

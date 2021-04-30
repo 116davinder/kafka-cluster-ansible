@@ -3,6 +3,7 @@
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: false
   any_errors_fatal: true
+  become: true
   tasks:
     - name: check kafka-{{ kafkaOldVersion }} installation files
       ansible.builtin.stat:

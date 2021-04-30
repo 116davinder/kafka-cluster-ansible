@@ -5,10 +5,10 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: disable firewalld service if exists
-  ansible.builtin.service:
-      name: firewalld
-      enabled: false
-      state: stopped
+  ansible.builtin.systemd:
+    name: firewalld
+    enabled: false
+    state: stopped
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
 
 - name: taking iptables backup | /opt/iptables-{{ ansible_date_time.date }}.bak

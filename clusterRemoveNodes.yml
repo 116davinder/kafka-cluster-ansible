@@ -2,13 +2,14 @@
 
 - hosts: localhost
   gather_facts: false
+  become: true
   tasks:
     - ansible.builtin.pause:
         prompt: "login to http://{{ groups['kafka-manager'][0] }}:9000 and reassign partitions to other nodes if any \nPress enter once reassignment is done"
 
 - hosts: clusterRemoveNodes
   gather_facts: true
-  any_errors_fatal: true
+  ignore_errors: true
   serial: 1
   roles:
     - decomissionNodes

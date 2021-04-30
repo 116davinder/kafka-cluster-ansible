@@ -2,6 +2,7 @@
 
 - hosts: clusterNodes[2]
   gather_facts: true
+  become: true
   tasks:
     - name: copy kafka-python package
       ansible.builtin.copy:

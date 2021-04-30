@@ -2,6 +2,7 @@
 
 - hosts: clusterAddNodes
   gather_facts: true
+  become: true
   serial: 1
   roles:
     - java

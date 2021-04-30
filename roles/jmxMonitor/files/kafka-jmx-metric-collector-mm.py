@@ -107,19 +107,20 @@ def main():
 
     z = KafkaJmx(hostname, port, inputFile, logDir,env,processName)
     z.cleanUpFiles()
-    _metric_thread = threading.Thread(
+
+    threading.Thread(
         target=z.getMetric
     ).start()
 
-    _cpu_metric_thread = threading.Thread(
+    threading.Thread(
         target=z.getCpuMetric
     ).start()
 
-    _memory_metric_thread = threading.Thread(
+    threading.Thread(
         target=z.getMemoryMetric
     ).start()
 
-    _storage_metric_thread = threading.Thread(
+    threading.Thread(
         target=z.getStorageMetric
     ).start()
 

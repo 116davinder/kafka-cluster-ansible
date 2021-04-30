@@ -2,6 +2,7 @@
 
 - hosts: kafka-manager
   gather_facts: true
+  become: true
   pre_tasks:
     - ansible.builtin.include_role:
         name: common
