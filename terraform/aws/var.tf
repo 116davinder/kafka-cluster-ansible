@@ -84,6 +84,6 @@ variable "tags" {
   description = "Tags to be Added to All Resources, except Env & Name Tag"
   default = {
     "owner"    = "Terraform"
-    "software" = "Apache Zookeeper"
+    "software" = "Apache Kafka"
   }
 }
