@@ -9,14 +9,14 @@
         src: "roles/jmxMonitor/files/{{ item }}"
         dest: "/tmp/{{ item }}"
       loop:
-        - kafka_python-2.0.1-py2.py3-none-any.whl
+        - kafka_python-2.0.2-py2.py3-none-any.whl
 
     - name: installing kafka_python with pip3
       ansible.builtin.pip:
         name: /tmp/{{ item }}
         executable: pip3
       loop:
-        - kafka_python-2.0.1-py2.py3-none-any.whl
+        - kafka_python-2.0.2-py2.py3-none-any.whl
 
     - include_role:
         name: jmxMonitor

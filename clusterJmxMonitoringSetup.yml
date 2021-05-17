@@ -11,7 +11,7 @@
       loop:
         - gcc
         - python3-devel
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      when: ansible_distribution in ['CentOS', 'RedHat'] | list
 
     - name: install gcc and python-devel ( Debain / Ubuntu )
       ansible.builtin.apt:
@@ -20,7 +20,7 @@
       loop:
         - gcc
         - python3-dev
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ['Debian', 'Ubuntu'] | list
 
     - name: copy jmxquery / psutil tar files
       ansible.builtin.copy:
@@ -28,7 +28,7 @@
         dest: "/tmp/{{ item }}"
       loop:
         - jmxquery-0.6.0.tar.gz
-        - psutil-5.7.0.tar.gz
+        - psutil-5.8.0.tar.gz
 
     - name: installing jmxquery / psutil with pip3
       ansible.builtin.pip:
@@ -36,7 +36,7 @@
         executable: pip3
       loop:
         - jmxquery-0.6.0.tar.gz
-        - psutil-5.7.0.tar.gz
+        - psutil-5.8.0.tar.gz
 
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: true
