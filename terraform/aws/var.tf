@@ -39,7 +39,7 @@ variable "allowed_inbound_client_cidrs" {
 
 variable "instance_type" {
   type        = string
-  default     = "t2.micro"
+  default     = "t3a.xlarge"
   description = "Instance Type"
 }
 
@@ -51,7 +51,7 @@ variable "key_name" {
 
 variable "kafka_nodes" {
   type        = number
-  default     = 1
+  default     = 2
   description = "how many nodes of kafka cluster is required?"
 }
 

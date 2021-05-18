@@ -1,6 +1,6 @@
 ---
 
-- hosts: clusterNodes
+- hosts: clusterNodes:clusterAddNodes
   gather_facts: true
   become: true
   tasks:

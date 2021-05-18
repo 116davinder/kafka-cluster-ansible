@@ -31,12 +31,12 @@ kafkaZookeeperConnectionTimeoutMs: 10000
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
 kafkaClusterName: development-kafka
 
-kafkaVersion: 2.6.0
+kafkaVersion: 2.8.0
 kafkaScalaVersion: 2.13
 kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
-kafkaOldVersion: 2.5.0
+kafkaOldVersion: 2.7.0
 kafkaOldScalaVersion: 2.13
 
 ### Production Optimization Parameters
@@ -68,6 +68,6 @@ kafkaGroupInitRebalanceDelayMs: 3
 
 # Only for AWS Based Cluster
 aws_kafka_ec2_region: "us-east-1"
-aws_kafka_ebs_device: "/dev/xvdc"
+aws_kafka_ebs_device: "/dev/nvme1n1"
 aws_kafka_ebs_device_fs: "xfs"                                # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"

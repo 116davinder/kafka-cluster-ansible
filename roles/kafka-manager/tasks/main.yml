@@ -1,6 +1,6 @@
 ---
 
-- name: copy and unarchive kafka manager | {{ kafkaManagerVersion }}
+- name: copy and unarchive kafka manager | {{ kafkaManagerVersion }} | Remote Download
   ansible.builtin.unarchive:
     src: "{{ kafkaManagerDownloadLink }}"
     dest: "{{ kafkaManagerInstallDir }}"
@@ -8,8 +8,20 @@
     group: "{{ kafkaGroup }}"
     validate_certs: false
     keep_newer: yes
-    remote_src: "{{ kafkaManagerRemoteDownload }}"
+    remote_src: true
     creates: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}/bin"
+  when: kafkaManagerRemoteDownload
+
+- name: copy and unarchive kafka | {{ kafkaManagerVersion }} | Local Upload
+  ansible.builtin.unarchive:
+    src: "{{ kafkaManagerLocalLink }}"
+    dest: "{{ kafkaManagerInstallDir }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
+    validate_certs: false
+    keep_newer: yes
+    creates: "{{ kafkaManagerInstallDir }}/cmak-{{ kafkaManagerVersion }}/bin"
+  when: not kafkaManagerRemoteDownload
 
 - name: Ensuring permissions on unarchieved files
   ansible.builtin.file:
