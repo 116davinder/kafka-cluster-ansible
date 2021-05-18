@@ -3,6 +3,7 @@
 - hosts: kafka-mirror-maker-remove-nodes
   gather_facts: true
   any_errors_fatal: true
+  become: true
   serial: 1
   tasks:
     - ansible.builtin.include_role:

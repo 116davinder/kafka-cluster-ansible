@@ -8,16 +8,16 @@
 
 - name: update location for kafka-logs in cloudwtch agent conf
   ansible.builtin.blockinfile:
-      path: /etc/awslogs/awslogs.conf
-      block: |
-        [cloudwatch-kafka-logs]
-        time_zone = LOCAL
-        datetime_format = %b %d %H:%M:%S
-        file = {{ kafkaInstallDir }}/kafka-logs/*.log
-        buffer_duration = 5000
-        log_stream_name = {instance_id}
-        initial_position = start_of_file
-        log_group_name = cloudwatch-kafka-logs
+    path: /etc/awslogs/awslogs.conf
+    block: |
+      [cloudwatch-kafka-logs]
+      time_zone = LOCAL
+      datetime_format = %b %d %H:%M:%S
+      file = {{ kafkaInstallDir }}/kafka-logs/*.log
+      buffer_duration = 5000
+      log_stream_name = {instance_id}
+      initial_position = start_of_file
+      log_group_name = kafka-{{ kafkaClusterName }}-logs
 
 - name: update aws region of clouwatch agent
   ansible.builtin.lineinfile:
@@ -26,7 +26,7 @@
     line: "region = {{ aws_kafka_ec2_region }}"
 
 - name: service enable awslogsd
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: awslogsd
     state: restarted
     enabled: true

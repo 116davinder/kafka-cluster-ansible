@@ -1,11 +1,14 @@
 ---
 
-- name: Stopping kafka service
-  ansible.builtin.import_role:
-    name: serviceState
+- name: Stoping kafka related services
+  ansible.builtin.include_role:
+    name: "serviceState"
   vars:
-    serviceName: kafka
-    serviceState: stopped
+    serviceName: "{{ item }}"
+    serviceState: "stopped"
+  loop:
+    - "kafka"
+    - "awslogsd"
 
 - name: kafka Port Status
   ansible.builtin.include_role:
@@ -17,16 +20,28 @@
     - "{{ kafkaPort }}"
     - "{{ kafkaJmxPort }}"
 
-- name: Removing all installation files
-  ansible.builtin.command: "/bin/rm -rf {{ kafkaInstallDir }}/*kafka*"
-
 - name: Removing data & log dirs related to installation
   ansible.builtin.file:
     path: "{{ item }}"
-    state: absent
+    state: "absent"
   loop:
     - "{{ kafkaInstallDir }}/kafka"
     - "{{ kafkaDataDir }}"
     - "{{ kafkaLogDir }}"
     - "{{ kafkaInstallDir }}/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}"
+    - "{{ kafkaInstallDir }}/kafka_{{ kafkaOldVersion }}-{{ kafkaOldScalaVersion }}"
+    - "{{ kafkaInstallDir }}/jmxMonitor"
     - "/usr/lib/systemd/system/kafka.service"
+
+- name: remove kafka cron
+  ansible.builtin.cron:
+    name: "kafka log dir clean up cron task"
+    state: "absent"
+    user: "{{ kafkaUser }}"
+
+- name: unmount kafka ebs volume | {{ aws_kafka_ebs_device }}
+  ansible.posix.mount:
+    path: "{{ aws_kafka_ebs_device_mount_location }}"
+    src: "{{ aws_kafka_ebs_device }}"
+    fstype: "{{ aws_kafka_ebs_device_fs }}"
+    state: "absent"

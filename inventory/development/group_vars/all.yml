@@ -1,6 +1,6 @@
 ---
 
-javaVersion: 8
+javaVersion: 11
 updateJava: false                                               # only when you need to update java version
 
 useSystemFirewall: false
@@ -15,7 +15,7 @@ kafkaDataDir: "{{ kafkaInstallDir }}/kafka-data"
 kafkaLogDir: "{{ kafkaInstallDir }}/kafka-logs"
 
 # JVM Settings
-# total memory * 0.25 or 25% or total memory only
+# total memory * 0.25 or 25% of total memory only
 # Rest 75% will be used for Caching 
 kafkaXms: 6G                                                    # 6GB is max recommended for production kafka
 kafkaXmx: "{{ kafkaXms }}"
@@ -25,19 +25,19 @@ kafkaVmMaxMapCount: 100000
 
 # zookeeper string should comma separate value
 # 192.168.56.100:2181,192.168.56.101:2181,192.168.56.102:2181
-kafkaZookeeperAddressString: 10.0.0.1:2181
+kafkaZookeeperAddressString: 35.172.235.154:2181
 kafkaZookeeperConnectionTimeoutMs: 10000
 
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
 kafkaClusterName: development-kafka
 
-kafkaVersion: 2.2.1
-kafkaScalaVersion: 2.12
-kafkaTarLocation: "/home/davinderpal/packages/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
+kafkaVersion: 2.8.0
+kafkaScalaVersion: 2.13
+kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
-kafkaOldVersion: 2.2.0
-kafkaOldScalaVersion: 2.12
+kafkaOldVersion: 2.7.0
+kafkaOldScalaVersion: 2.13
 
 ### Production Optimization Parameters
 ### if nothing is set then it will use default values.
@@ -67,7 +67,7 @@ kafkaGroupInitRebalanceDelayMs: 3
 
 
 # Only for AWS Based Cluster
-aws_kafka_ec2_region: "eu-central-1"
-aws_kafka_ebs_device: "/dev/xvdc"
+aws_kafka_ec2_region: "us-east-1"
+aws_kafka_ebs_device: "/dev/nvme1n1"
 aws_kafka_ebs_device_fs: "xfs"                                # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"

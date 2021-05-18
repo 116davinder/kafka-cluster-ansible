@@ -2,6 +2,7 @@
 
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: true
+  become: true
   serial: 1
   tasks:
     - name: including restart tasks

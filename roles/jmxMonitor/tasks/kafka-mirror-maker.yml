@@ -4,11 +4,15 @@
   ansible.builtin.file:
     path: "{{ kafkaInstallDir }}/jmxMonitor"
     state: directory
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
 
 - name: copying script and input files
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ kafkaInstallDir }}/jmxMonitor/{{ item }}"
+    owner: "{{ kafkaUser }}"
+    group: "{{ kafkaGroup }}"
   loop:
     - kafka-jmx-metric-collector-mm.py
     - kafka-mirror-input.txt
@@ -19,6 +23,6 @@
     minute: "*"
     hour: "*"
     weekday: "*"
-    user: root
+    user: "{{ kafkaUser }}"
     job: 'find /bin/ -name "python3*m" -print0 -exec {} {{ kafkaInstallDir }}/jmxMonitor/kafka-jmx-metric-collector-mm.py {{ ansible_fqdn }} {{ kafkaMirrorMakerJmxInitialPort + item }} {{ kafkaInstallDir }}/jmxMonitor/kafka-mirror-input.txt {{ kafkaLogDir }}/Kafka-Mirror-Maker-Process-{{ item }}- {{ kafkaClusterName }} Kafka-Mirror-Maker-Process-{{ item }} \;'
   loop: "{{ range(1, kafkaMirrorMakerProcessCountPerNode + 1, 1) | list }}"

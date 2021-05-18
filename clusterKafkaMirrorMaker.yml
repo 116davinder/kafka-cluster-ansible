@@ -2,6 +2,7 @@
 
 - hosts: kafka-mirror-maker
   gather_facts: true
+  become: true
   roles:
     - java
     - common
