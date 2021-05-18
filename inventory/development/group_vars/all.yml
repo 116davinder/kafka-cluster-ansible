@@ -25,7 +25,7 @@ kafkaVmMaxMapCount: 100000
 
 # zookeeper string should comma separate value
 # 192.168.56.100:2181,192.168.56.101:2181,192.168.56.102:2181
-kafkaZookeeperAddressString: 10.0.0.1:2181
+kafkaZookeeperAddressString: 35.172.235.154:2181
 kafkaZookeeperConnectionTimeoutMs: 10000
 
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
@@ -33,7 +33,7 @@ kafkaClusterName: development-kafka
 
 kafkaVersion: 2.6.0
 kafkaScalaVersion: 2.13
-kafkaTarLocation: "/home/davinderpal/packages/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
+kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
 kafkaOldVersion: 2.5.0

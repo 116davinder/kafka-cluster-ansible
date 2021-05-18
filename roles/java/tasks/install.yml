@@ -47,14 +47,14 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Install Openjdk | <= 8 | Amazon | if java version is less than 8
-  ansible.builtin.command: "amazon-linux-extras install java-1.{{ javaVersion }}.0-openjdk"
+  ansible.builtin.command: "amazon-linux-extras install java-1.{{ javaVersion }}.0-openjdk -y"
   when:
     - ansible_distribution in ['Amazon'] | list
     - javaVersion | int <= 8
 
 # INFO: Java 9 & 10 packages are not avilable
 - name: Install Openjdk | >= 11 | Amazon | if java version is greater than 11
-  ansible.builtin.command: "amazon-linux-extras install java-openjdk{{ javaVersion }}"
+  ansible.builtin.command: "amazon-linux-extras install java-openjdk{{ javaVersion }} -y"
   when:
     - ansible_distribution in ['Amazon'] | list
     - javaVersion | int >= 11
