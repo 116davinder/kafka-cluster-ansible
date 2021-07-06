@@ -15,6 +15,7 @@ It is a group of playbooks to manage apache kafka.
 3. All tasks like broker/jvm/logging/downgrade/removeOldVersion will be done in serial order.
 4. It doesn't support upgrading old kafka clusters from 0.9.0 to 2.x versions.
 5. Vagrant 6.x is not stable yet and older versions doesn't have support ubuntu 20 so it might not work.
+6. Please use tags for production deployment, Master will be used as development branch.
 ```
 
 ## **Extra**
@@ -181,7 +182,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 * CentOS 7
 * RedHat 7
 * Ubuntu / Debain ( under progress, might work :) )
-* Amzaon Linux 2
+* Amzaon Linux 2 ( under progress, might work :) )
 
 ### **Tested Ansible Version**
 ```

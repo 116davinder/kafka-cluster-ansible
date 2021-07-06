@@ -3,7 +3,7 @@
 - hosts: clusterNodes:clusterAddNodes:kafka-mirror-maker
   gather_facts: true
   become: true
-  pre_tasks:
+  tasks:
     - name: install gcc and python-devel ( Redhat / CentOS )
       ansible.builtin.yum:
         name: "{{ item }}"
@@ -22,21 +22,15 @@
         - python3-dev
       when: ansible_distribution in ['Debian', 'Ubuntu'] | list
 
-    - name: copy jmxquery / psutil tar files
+    - name: copy kafka-python package
       ansible.builtin.copy:
-        src: "roles/jmxMonitor/files/{{ item }}"
-        dest: "/tmp/{{ item }}"
-      loop:
-        - jmxquery-0.6.0.tar.gz
-        - psutil-5.8.0.tar.gz
+        src: "roles/jmxMonitor/files/requirements.txt"
+        dest: "/tmp/requirements.txt"
 
-    - name: installing jmxquery / psutil with pip3
+    - name: installing kafka_python with pip3
       ansible.builtin.pip:
-        name: /tmp/{{ item }}
+        requirements: "/tmp/requirements.txt"
         executable: pip3
-      loop:
-        - jmxquery-0.6.0.tar.gz
-        - psutil-5.8.0.tar.gz
 
 - hosts: clusterNodes:clusterAddNodes
   gather_facts: true
@@ -49,3 +43,12 @@
     - ansible.builtin.include_role:
         name: jmxMonitor
         tasks_from: kafka-mirror-maker.yml
+
+- hosts: clusterNodes:clusterAddNodes:kafka-mirror-maker
+  gather_facts: true
+  become: true
+  tasks:
+    - name: clean temp files
+      ansible.builtin.file:
+        path: "/tmp/requirements.txt"
+        state: absent

@@ -3,6 +3,7 @@ import json
 import sys
 from datetime import datetime
 import threading
+import pendulum
 
 
 class KCMetric:
@@ -13,13 +14,12 @@ class KCMetric:
         self.BOOTSTRAP_SERVERS = ["localhost"]
         self.ENV = env
         self.LOGDIR = logDir
-        self.CTIMENOW = datetime.now()
 
         self.metricJsonDict = {
             "topic": self.TOPIC,
             "group_id": self.GROUP,
             "env": self.ENV,
-            "@timestamp": str(self.CTIMENOW),
+            "@timestamp": str(pendulum.today()),
             "partition": {},
         }
 

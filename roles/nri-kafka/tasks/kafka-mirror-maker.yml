@@ -19,11 +19,3 @@
   ansible.builtin.service:
     name: newrelic-infra
     state: restarted
-
-- name: removing newrelic infra rpm from server
-  ansible.builtin.file:
-    path: "/tmp/{{ item }}"
-    state: absent
-  loop:
-    - "{{ newRelicCliJmxRpmName }}"
-    - "{{ newRelicJmxRpmName }}"

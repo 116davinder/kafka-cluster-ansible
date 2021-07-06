@@ -12,12 +12,12 @@
   pre_tasks:
     - name: checking newrelic infra agent status ( Redhat / CentOS )
       ansible.builtin.shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      when: ansible_distribution in ['CentOS', 'RedHat'] | list
       register: isNewRelicInfraInstalledYum
 
     - name: checking newrelic infra agent status ( Ubuntu / Debain )
-      ansible.builtin.shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      ansible.builtin.shell: "set -o pipefail && apt list --installed | grep -i newrelic-infra"
+      when: ansible_distribution in ['Debian', 'Ubuntu'] | list
       register: isNewRelicInfraInstalledApt
 
   roles:
@@ -32,12 +32,12 @@
   pre_tasks:
     - name: checking newrelic infra agent status ( Redhat / CentOS )
       ansible.builtin.shell: "set -o pipefail && rpm -qa | grep newrelic-infra"
-      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      when: ansible_distribution in ['CentOS', 'RedHat'] | list
       register: isNewRelicInfraInstalledYum
 
     - name: checking newrelic infra agent status ( Ubuntu / Debain )
-      ansible.builtin.shell: "set -o pipefail && apt search newrelic-infra | grep newrelic-infra"
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      ansible.builtin.shell: "set -o pipefail && apt list --installed | grep -i newrelic-infra"
+      when: ansible_distribution in ['Debian', 'Ubuntu'] | list
       register: isNewRelicInfraInstalledApt
 
   tasks:

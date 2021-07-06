@@ -7,11 +7,11 @@
 
 from jmxquery import *
 from socket import gethostname
-from datetime import datetime
 import json
 import sys
 import psutil
 import threading
+import pendulum
 
 
 class KafkaJmx:
@@ -25,7 +25,7 @@ class KafkaJmx:
             + str(self.kPort)
             + "/jmxrmi"
         )
-        self.cTimeNow = datetime.now()
+        self.cTimeNow = str(pendulum.today())
         self.jmxConnection = JMXConnection(self.kJmxAddr)
         self.inputFile = inputFile
         self.logDir = logDir
@@ -50,7 +50,7 @@ class KafkaJmx:
                     queryName = metric.to_query_string().split(":")[1]
                     queryValue = metric.value
                     _queryDict = {
-                        "@timestamp": str(self.cTimeNow),
+                        "@timestamp": self.cTimeNow,
                         "domainName": str(domainName),
                         "environment": str(self.env),
                         "queryName": str(queryName),
@@ -67,7 +67,7 @@ class KafkaJmx:
     def getStorageMetric(self):
         _sMM = psutil.disk_usage("/kafka")
         _sMetric = {
-            "@timestamp": str(self.cTimeNow),
+            "@timestamp": self.cTimeNow,
             "domainName": "disk",
             "environment": self.env,
             "totalInGB": _sMM.total // (2 ** 30),
@@ -81,7 +81,7 @@ class KafkaJmx:
 
     def getCpuMetric(self):
         _cMetric = {
-            "@timestamp": str(self.cTimeNow),
+            "@timestamp": self.cTimeNow,
             "domainName": "cpu",
             "environment": self.env,
             "usedCpuPercent": psutil.cpu_percent(),
@@ -94,7 +94,7 @@ class KafkaJmx:
         _memStats = psutil.virtual_memory()
         _swapMemStats = psutil.swap_memory()
         _rMetric = {
-            "@timestamp": str(self.cTimeNow),
+            "@timestamp": self.cTimeNow,
             "domainName": "memory",
             "environment": self.env,
             "totalMem": _memStats.total // (2 ** 30),
