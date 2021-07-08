@@ -2,6 +2,9 @@
 
 It is a group of playbooks to manage apache kafka.
 
+## Latest Release
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/116davinder/kafka-cluster-ansible?include_prereleases&style=for-the-badge)
+
 ## **Requirements**
 * Download Apache Kafka Tar on Ansible Server ( Mandatory )
 * vagrant (optional)
