@@ -1,9 +1,8 @@
 # Apache Kafka Ansible
-
 It is a group of playbooks to manage apache kafka.
 
-## Latest Release
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/116davinder/kafka-cluster-ansible?include_prereleases&style=for-the-badge)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6b13d0a35e514d87aaed6627280769b5)](https://www.codacy.com/gh/116davinder/kafka-cluster-ansible/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=116davinder/kafka-cluster-ansible&amp;utm_campaign=Badge_Grade)
 
 ## **Requirements**
 * Download Apache Kafka Tar on Ansible Server ( Mandatory )
