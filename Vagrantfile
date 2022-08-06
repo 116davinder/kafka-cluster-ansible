@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   # Setting CPU and Memory for All machines
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
-    vb.memory = "750"
+    vb.memory = "1024"
     vb.cpus =  1
     vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ] # used for wsl2
   end

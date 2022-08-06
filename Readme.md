@@ -183,7 +183,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 ### **Tested OS**
 * CentOS 7
 * RedHat 7
-* Ubuntu / Debain ( under progress, might work :) )
+* Ubuntu
 * Amzaon Linux 2 ( under progress, might work :) )
 
 ### **Tested Ansible Version**
