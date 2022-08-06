@@ -31,12 +31,12 @@ kafkaZookeeperConnectionTimeoutMs: 10000
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
 kafkaClusterName: development-kafka
 
-kafkaVersion: 2.8.0
+kafkaVersion: 3.2.1
 kafkaScalaVersion: 2.13
 kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
-kafkaOldVersion: 2.7.0
+kafkaOldVersion: 3.0.0
 kafkaOldScalaVersion: 2.13
 
 ### Production Optimization Parameters
