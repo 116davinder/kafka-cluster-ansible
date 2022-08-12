@@ -39,7 +39,7 @@ kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVe
 kafkaOldVersion: 3.0.0
 kafkaOldScalaVersion: 2.13
 
-### Production Optimizated Parameters
+### Production Optimized Parameters
 ### if nothing is set then it will use default values.
 kafkaDefaultReplicationFactor: 3
 kafkaMinInsyncReplicas: "{{ kafkaDefaultReplicationFactor | int - 1 }}"
