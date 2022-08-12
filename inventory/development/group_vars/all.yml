@@ -25,7 +25,7 @@ kafkaVmMaxMapCount: 100000
 
 # zookeeper string should comma separate value
 # 192.168.56.100:2181,192.168.56.101:2181,192.168.56.102:2181
-kafkaZookeeperAddressString: 35.172.235.154:2181
+kafkaZookeeperAddressString: 192.168.56.101:2181
 kafkaZookeeperConnectionTimeoutMs: 10000
 
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
@@ -39,7 +39,7 @@ kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVe
 kafkaOldVersion: 3.0.0
 kafkaOldScalaVersion: 2.13
 
-### Production Optimization Parameters
+### Production Optimizated Parameters
 ### if nothing is set then it will use default values.
 kafkaDefaultReplicationFactor: 3
 kafkaMinInsyncReplicas: "{{ kafkaDefaultReplicationFactor | int - 1 }}"
@@ -61,7 +61,7 @@ kafkaTransactionStateLogMinIsr: "{{  kafkaOffsetsTopicReplicationFactor }}"
 kafkaLogFlushIntervalMessages: 10000
 kafkaLogFlushIntervalMs: 1000
 kafkaLogRetentionHours: 168
-kafkaLogSegmentBytes: 2073741824                                # need to ask expert kafka, should we use default 1GB here or 2GB or more
+kafkaLogSegmentBytes: 2073741824                                # need to ask kafka expert, should we use default 1GB here or 2GB or more
 kafkalogRetentionCheckIntervalMs: 300000
 kafkaGroupInitRebalanceDelayMs: 3
 
@@ -69,5 +69,5 @@ kafkaGroupInitRebalanceDelayMs: 3
 # Only for AWS Based Cluster
 aws_kafka_ec2_region: "us-east-1"
 aws_kafka_ebs_device: "/dev/nvme1n1"
-aws_kafka_ebs_device_fs: "xfs"                                # currently tested with xfs only.
+aws_kafka_ebs_device_fs: "xfs"                                  # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"
