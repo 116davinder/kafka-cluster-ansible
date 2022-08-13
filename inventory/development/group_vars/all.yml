@@ -14,6 +14,11 @@ kafkaInstallDir: /kafka
 kafkaDataDir: "{{ kafkaInstallDir }}/kafka-data"
 kafkaLogDir: "{{ kafkaInstallDir }}/kafka-logs"
 
+kafkaGcLogs: true
+kafkaGcLogsLocation: "{{ kafkaLogDir }}"
+kafkaGcLogFileCount: 5
+kafkaGcLogFileSize: 10M # with optional K, M or G suffix
+
 # JVM Settings
 # total memory * 0.25 or 25% of total memory only
 # Rest 75% will be used for Caching 
@@ -33,7 +38,7 @@ kafkaClusterName: development-kafka
 
 kafkaVersion: 3.2.1
 kafkaScalaVersion: 2.13
-kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
+kafkaTarLocation: "~/projects/kafka-cluster-ansible/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
 kafkaOldVersion: 3.0.0
