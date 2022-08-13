@@ -22,7 +22,7 @@
         - python3-dev
       when: ansible_distribution in ['Debian', 'Ubuntu'] | list
 
-    - name: copy kafka-python package
+    - name: copy python requirements
       ansible.builtin.copy:
         src: "roles/jmxMonitor/files/requirements.txt"
         dest: "/tmp/requirements.txt"

@@ -8,7 +8,9 @@ Vagrant.configure("2") do |config|
         node.vm.box = "ubuntu/focal64"
         node.vm.hostname  = "kafka#{i}"
         node.vm.network :private_network, ip: "192.168.56.10#{i}"
-        #node.vm.provision :hosts, :sync_hosts => true
+        # expose JMX port
+        node.vm.network "forwarded_port", guest: 9999, host: "1000#{i}", protocol: "tcp"
+        # node.vm.provision :hosts, :sync_hosts => true
       end
   end
   # Setting CPU and Memory for All machines
