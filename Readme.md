@@ -25,21 +25,17 @@ It is a group of playbooks to manage apache kafka.
 * **Zookeeper Installation**
 https://github.com/116davinder/zookeeper-cluster-ansible
 
-# **Development Setup with Vagrant**
+## **Development Setup with Vagrant**
 
-## **Vagrant PreSetup for cluster**
+### **Vagrant PreSetup for cluster**
 It will update `/etc/hosts` with required dns names.
 
 ```ansible-playbook -i inventory/development/cluster.ini clusterVagrantDnsUpdater.yml```
 
-# **Production Environment Setup**
-
-## **Cloud Infra Setup for Apache Kafka Using Terraform**
+## **Development with Cloud Infra Setup for Apache Kafka Using Terraform**
 
 * `terraform/aws`
 * `terraform/oci`
-
-## **Apache Kafka Playbooks**
 
 ### **AWS Cloud PreSetup for cluster**
 It will enable following things on all nodes.
@@ -52,6 +48,8 @@ It will enable following things on all nodes.
 * Update Required vars in ```inventory/<environment>/cluster.ini``` .
 
 ```ansible-playbook -i inventory/<environment>/cluster.ini clusterAwsPreSetup.yml```
+
+## **Production Environment Setup**
 
 ### **To start new cluster**
 * Update Required vars in ```inventory/<environment>/group_vars/all.yml``` .

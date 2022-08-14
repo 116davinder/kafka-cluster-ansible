@@ -5,7 +5,7 @@
 # This script suppose to export all kafka metric from one node and write to file
 # from where either splunk like tools can read it.
 
-from jmxquery import *
+from jmxquery import JMXQuery, JMXConnection
 from socket import gethostname
 import json
 import sys
