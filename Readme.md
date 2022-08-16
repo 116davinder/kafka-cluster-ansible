@@ -192,6 +192,6 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ### **Tested Ansible Version**
 ```
-ansible: 3.2.0
-ansible-base: 2.10.7
+ansible: 6.1.0
+ansible-base: 2.13.2
 ```
