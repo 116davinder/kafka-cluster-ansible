@@ -5,5 +5,5 @@
     host: "0.0.0.0"
     port: "{{ portNumber }}"
     state: "{{ portStatus }}"
-    timeout: 300
+    timeout: 180
     delay: 10

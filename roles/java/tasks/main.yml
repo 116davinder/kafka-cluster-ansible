@@ -10,7 +10,7 @@
   when: javaRequired is failed or updateJava
 
 # Not Required
-# As System Admin Team might upgrade Java Part of Patch Cycle
+# As System Admin Team might upgrade Java as part of their Patch Cycle
 # old version of java might cause issue.
 
 #- name: Checking if Java_home setting is needed

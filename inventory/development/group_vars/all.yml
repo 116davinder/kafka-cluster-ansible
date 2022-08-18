@@ -22,7 +22,7 @@ kafkaGcLogFileSize: 10M # with optional K, M or G suffix
 # JVM Settings
 # total memory * 0.25 or 25% of total memory only
 # Rest 75% will be used for Caching 
-kafkaXms: 6G                                                    # 6GB is max recommended for production kafka
+kafkaXms: "256m"             # 6GB is max recommended for production kafka
 kafkaXmx: "{{ kafkaXms }}"
 kafkaPort: 9092
 kafkaJmxPort: 9999
@@ -76,3 +76,6 @@ aws_kafka_ec2_region: "us-east-1"
 aws_kafka_ebs_device: "/dev/nvme1n1"
 aws_kafka_ebs_device_fs: "xfs"                                  # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"
+
+# Only AWS Cloudwatch Agent
+aws_kafka_cloudwatch_log_group: "kafka-{{ kafkaClusterName }}-logs"

@@ -5,8 +5,8 @@
     name: "{{ item }}"
     state: present
   loop:
-    - https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/nri-jmx-2.4.11-1.x86_64.rpm
-    - https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/nrjmx-1.5.3-1.x86_64.rpm
+    - https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/nri-jmx-3.1.0-1.x86_64.rpm
+    - https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/nrjmx-2.1.1-1.noarch.rpm
   when: ansible_distribution in ['CentOS', 'RedHat'] | list
 
 - name: installing newrelic integration plugins ( Ubuntu / Debian )
@@ -14,6 +14,6 @@
     name: "{{ item }}"
     state: present
   loop:
-    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nrjmx/nrjmx_1.5.3-1_amd64.deb
-    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nri-jmx/nri-jmx_2.4.11-1_amd64.deb
+    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nrjmx/nrjmx_2.1.1-1_noarch.deb
+    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nri-jmx/nri-jmx_3.1.0-1_arm64.deb
   when: ansible_distribution in ['Debian', 'Ubuntu'] | list

@@ -8,6 +8,11 @@ collect:
           - query: type=KafkaController,name=ActiveControllerCount
           - query: type=ControllerStats,name=LeaderElectionRateAndTimeMs
           - query: type=ControllerStats,name=UncleanLeaderElectionsPerSec
+          - query: type=ControllerEventManager,name=EventQueueSize
+          - query: type=ControllerEventManager,name=EventQueueTimeMs
+          - query: type=KafkaController,name=TopicsToDeleteCount
+          - query: type=KafkaController,name=ReplicasToDeleteCount
+          - query: type=KafkaController,name=ReplicasIneligibleToDeleteCount
 
     - domain: kafka.log
       event_type: kafkaMonitoring
@@ -25,6 +30,8 @@ collect:
           - query: type=RequestMetrics,name=RemoteTimeMs,request=*
           - query: type=RequestMetrics,name=ResponseQueueTimeMs,request=*
           - query: type=RequestMetrics,name=ResponseSendTimeMs,request=*
+          - query: type=RequestMetrics,name=TemporaryMemoryBytes,request=*
+          - query: type=RequestMetrics,name=MessageConversionsTimeMs,request=*
 
     - domain: kafka.server
       event_type: kafkaMonitoring
@@ -33,6 +40,7 @@ collect:
           - query: type=ReplicaFetcherManager,name=MaxLag,clientId=Replica
           - query: type=FetcherLagMetrics,name=ConsumerLag,clientId=*,topic=*,partition=*
           - query: type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=*
+          - query: type=ZooKeeperClientMetrics,name=*
 
     - domain: kafka.utils
       event_type: kafkaMonitoring
