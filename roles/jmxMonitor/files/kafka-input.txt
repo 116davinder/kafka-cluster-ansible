@@ -6,6 +6,12 @@ kafka.controller:type=KafkaController,name=OfflinePartitionsCount
 kafka.controller:type=KafkaController,name=ActiveControllerCount
 kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs
 kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec
+# kafka.controller:type=ControllerChannelManager,name=RequestRateAndQueueTimeMs
+kafka.controller:type=ControllerEventManager,name=EventQueueSize
+kafka.controller:type=ControllerEventManager,name=EventQueueTimeMs
+kafka.controller:type=KafkaController,name=TopicsToDeleteCount
+kafka.controller:type=KafkaController,name=ReplicasToDeleteCount
+kafka.controller:type=KafkaController,name=ReplicasIneligibleToDeleteCount
 kafka.log:type=LogFlushStats,name=LogFlushRateAndTimeMs
 kafka.log:type=Log,name=Size,topic=*,partition=*
 kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent
@@ -28,6 +34,11 @@ kafka.network:type=RequestMetrics,name=ResponseQueueTimeMs,request=FetchFollower
 kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,request=Produce
 kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,request=FetchConsumer
 kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,request=FetchFollower
+# kafka.network:type=RequestMetrics,name=ErrorsPerSec
+kafka.network:type=RequestMetrics,name=TemporaryMemoryBytes,request=Produce
+kafka.network:type=RequestMetrics,name=TemporaryMemoryBytes,request=Fetch
+kafka.network:type=RequestMetrics,name=MessageConversionsTimeMs,request=Produce
+kafka.network:type=RequestMetrics,name=MessageConversionsTimeMs,request=Fetch
 kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec
 kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec
 kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSec
@@ -35,6 +46,7 @@ kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec
 kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec
+kafka.server:type=BrokerTopicMetrics,name=BytesRejectedPerSec
 kafka.server:type=KafkaServer,name=*
 kafka.server:type=ReplicaManager,name=IsrShrinksPerSec
 kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
@@ -42,8 +54,11 @@ kafka.server:type=ReplicaManager,name=UnderMinIsrPartitionCount
 kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions
 kafka.server:type=ReplicaManager,name=LeaderCount
 kafka.server:type=ReplicaManager,name=PartitionCount
+kafka.server:type=ReplicaManager,name=ReassigningPartitions
 kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica
 kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Produce
 kafka.server:type=DelayedOperationPurgatory,name=PurgatorySize,delayedOperation=Fetch
 kafka.server:type=SessionExpireListener,name=*
+kafka.server:type=ZooKeeperClientMetrics,name=*
+# kafka.server:type=group-coordinator-metrics,name=*
 kafka.utils:type=*,name=*

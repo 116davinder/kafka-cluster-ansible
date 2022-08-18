@@ -24,4 +24,4 @@
     hour: "*"
     weekday: "*"
     user: "{{ kafkaUser }}"
-    job: 'find /bin/ -name "python3*m" -print0 -exec {} {{ kafkaInstallDir }}/jmxMonitor/kafka-jmx-metric-collector.py {{ ansible_fqdn }} {{ kafkaJmxPort }} {{ kafkaInstallDir }}/jmxMonitor/kafka-input.txt {{ kafkaLogDir }}/ {{ kafkaClusterName }} \;'
+    job: 'python3 {{ kafkaInstallDir }}/jmxMonitor/kafka-jmx-metric-collector.py {{ ansible_fqdn }} {{ kafkaJmxPort }} {{ kafkaInstallDir }}/jmxMonitor/kafka-input.txt {{ kafkaLogDir }}/ {{ kafkaClusterName }} \;'

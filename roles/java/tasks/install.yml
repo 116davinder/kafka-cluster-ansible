@@ -20,7 +20,7 @@
     - "java-1.{{ javaVersion }}.0-openjdk"
     - "java-1.{{ javaVersion }}.0-openjdk-devel"
   when:
-    - ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'RedHat'] | list
+    - ansible_distribution in ['CentOS', 'RedHat'] | list
     - javaVersion | int <= 8
 
 # INFO: Java 9 & 10 packages are not avilable
@@ -33,7 +33,7 @@
     - "java-{{ javaVersion }}-openjdk"
     - "java-{{ javaVersion }}-openjdk-devel"
   when:
-    - ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'RedHat'] | list
+    - ansible_distribution in ['CentOS', 'RedHat'] | list
     - javaVersion | int >= 11
 
 - name: Install OpenJdk | {{ javaVersion }} | Debian/Ubuntu
@@ -44,7 +44,7 @@
   loop:
     - "openjdk-{{ javaVersion }}-jdk-headless"
     - "openjdk-{{ javaVersion }}-jdk"
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_distribution in ['Debian', 'Ubuntu'] | list
 
 - name: Install Openjdk | <= 8 | Amazon | if java version is less than 8
   ansible.builtin.command: "amazon-linux-extras install java-1.{{ javaVersion }}.0-openjdk -y"

@@ -1,0 +1,13 @@
+---
+
+- hosts: clusterNodes:clusterAddNodes
+  gather_facts: true
+  become: true
+  tasks:
+    - name: "Update the /etc/hosts file with node name"
+      ansible.builtin.lineinfile:
+        dest: "/etc/hosts"
+        line: "{{ item }}\t{{ hostvars[item]['ansible_fqdn']}}"
+        state: "present"
+        backup: true
+      loop: "{{ query('inventory_hostnames', 'clusterNodes:clusterAddNodes') }}"

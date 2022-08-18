@@ -5,7 +5,7 @@
 # This script suppose to export all kafka metric from one node and write to file
 # from where either splunk like tools can read it.
 
-from jmxquery import *
+from jmxquery import JMXQuery, JMXConnection
 from socket import gethostname
 import json
 import sys
@@ -41,24 +41,26 @@ class KafkaJmx:
     def getMetric(self):
         with open(self.inputFile) as file:
             for query in file:
-                metrics = self.jmxConnection.query(
-                    [JMXQuery(query.strip())], timeout=1000000
-                )
-                for metric in metrics:
-                    domainName = metric.to_query_string().split(":")[0]
-                    queryName = metric.to_query_string().split(":")[1]
-                    queryValue = metric.value
-                    _queryDict = {
-                        "@timestamp": self.cTimeNow,
-                        "domainName": str(domainName),
-                        "environment": str(self.env),
-                        "processName": str(self.processName),
-                        "queryName": str(queryName),
-                        "queryValue": queryValue,
-                    }
-                    with open(self.logDir + domainName + ".log", "a+") as logFile:
-                        logFile.write("\n")
-                        logFile.write(json.dumps(_queryDict))
+                query = query.strip()
+                if not query.startswith("#") and len(query) > 0:
+                    metrics = self.jmxConnection.query(
+                        [JMXQuery(query)], timeout=1000000
+                    )
+                    for metric in metrics:
+                        domainName = metric.to_query_string().split(":")[0]
+                        queryName = metric.to_query_string().split(":")[1]
+                        queryValue = metric.value
+                        _queryDict = {
+                            "@timestamp": self.cTimeNow,
+                            "domainName": str(domainName),
+                            "environment": str(self.env),
+                            "processName": str(self.processName),
+                            "queryName": str(queryName),
+                            "queryValue": queryValue,
+                        }
+                        with open(self.logDir + domainName + ".log", "a+") as logFile:
+                            logFile.write("\n")
+                            logFile.write(json.dumps(_queryDict))
 
     def cleanUpFiles(self):
         for domainName in self.domainNameList:

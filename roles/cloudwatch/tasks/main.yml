@@ -17,7 +17,7 @@
       buffer_duration = 5000
       log_stream_name = {instance_id}
       initial_position = start_of_file
-      log_group_name = kafka-{{ kafkaClusterName }}-logs
+      log_group_name = {{ aws_kafka_cloudwatch_log_group }}
 
 - name: update aws region of clouwatch agent
   ansible.builtin.lineinfile:

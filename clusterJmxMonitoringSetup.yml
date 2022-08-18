@@ -4,30 +4,17 @@
   gather_facts: true
   become: true
   tasks:
-    - name: install gcc and python-devel ( Redhat / CentOS )
-      ansible.builtin.yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - gcc
-        - python3-devel
-      when: ansible_distribution in ['CentOS', 'RedHat'] | list
+    - name: install common utils
+      ansible.builtin.include_role:
+        name: common
+        tasks_from: commonUtils.yml
 
-    - name: install gcc and python-devel ( Debain / Ubuntu )
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - gcc
-        - python3-dev
-      when: ansible_distribution in ['Debian', 'Ubuntu'] | list
-
-    - name: copy kafka-python package
+    - name: copy python requirements.txt
       ansible.builtin.copy:
         src: "roles/jmxMonitor/files/requirements.txt"
         dest: "/tmp/requirements.txt"
 
-    - name: installing kafka_python with pip3
+    - name: installing requirements.txt with pip3
       ansible.builtin.pip:
         requirements: "/tmp/requirements.txt"
         executable: pip3

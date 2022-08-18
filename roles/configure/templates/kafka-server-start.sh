@@ -41,18 +41,25 @@ case $COMMAND in
     ;;
 esac
 
+# java use IPv4 stack
+export KAFKA_IPV4_STACK_OPTS="-Djava.net.preferIPv4Stack=true"
+
 # kafka OOM settings
 export KAFKA_OOM_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath={{ kafkaLogDir }} "
 
 # kafka gc logs settings
+{% if kafkaGcLogs %}
 {% if javaVersion > 9 %}
-export KAFKA_GC_LOG_OPTS="-Xlog:gc*:file={{ kafkaLogDir }}/kafkaServer-gc.log:time,tags:filecount=10,filesize=1024"
+export KAFKA_GC_LOG_OPTS="-Xlog:gc*:file={{ kafkaGcLogsLocation }}/kafkaServer-gc.log:time,tags:filecount={{ kafkaGcLogFileCount }},filesize={{ kafkaGcLogFileSize }}"
 {% else %}
-export KAFKA_GC_LOG_OPTS="-Xloggc:{{ kafkaLogDir }}/kafkaServer-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M"
+export KAFKA_GC_LOG_OPTS="-Xloggc:{{ kafkaGcLogsLocation }}/kafkaServer-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles={{ kafkaGcLogFileCount }} -XX:GCLogFileSize={{ kafkaGcLogFileSize }}"
+{% endif %}
 {% endif %}
 
 # kafka jmx settings
-export KAFKA_JMX_OPTS="-Djava.rmi.server.hostname={{ ansible_default_ipv4['address'] | default('0.0.0.0') }} -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.rmi.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+export KAFKA_JMX_OPTS="-Djava.rmi.server.hostname=0.0.0.0 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.rmi.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote.port={{ kafkaJmxPort }} -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+export KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS $KAFKA_IPV4_STACK_OPTS"
+
 export JMX_PORT={{ kafkaJmxPort }}
 
 # aggregate opts

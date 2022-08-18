@@ -14,10 +14,15 @@ kafkaInstallDir: /kafka
 kafkaDataDir: "{{ kafkaInstallDir }}/kafka-data"
 kafkaLogDir: "{{ kafkaInstallDir }}/kafka-logs"
 
+kafkaGcLogs: true
+kafkaGcLogsLocation: "{{ kafkaLogDir }}"
+kafkaGcLogFileCount: 5
+kafkaGcLogFileSize: 10M # with optional K, M or G suffix
+
 # JVM Settings
 # total memory * 0.25 or 25% of total memory only
 # Rest 75% will be used for Caching 
-kafkaXms: 6G                                                    # 6GB is max recommended for production kafka
+kafkaXms: "256m"             # 6GB is max recommended for production kafka
 kafkaXmx: "{{ kafkaXms }}"
 kafkaPort: 9092
 kafkaJmxPort: 9999
@@ -25,21 +30,21 @@ kafkaVmMaxMapCount: 100000
 
 # zookeeper string should comma separate value
 # 192.168.56.100:2181,192.168.56.101:2181,192.168.56.102:2181
-kafkaZookeeperAddressString: 35.172.235.154:2181
+kafkaZookeeperAddressString: 192.168.56.101:2181
 kafkaZookeeperConnectionTimeoutMs: 10000
 
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
 kafkaClusterName: development-kafka
 
-kafkaVersion: 2.8.0
+kafkaVersion: 3.2.1
 kafkaScalaVersion: 2.13
-kafkaTarLocation: "/home/dpal/Downloads/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
+kafkaTarLocation: "~/projects/kafka-cluster-ansible/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
-kafkaOldVersion: 2.7.0
+kafkaOldVersion: 3.0.0
 kafkaOldScalaVersion: 2.13
 
-### Production Optimization Parameters
+### Production Optimized Parameters
 ### if nothing is set then it will use default values.
 kafkaDefaultReplicationFactor: 3
 kafkaMinInsyncReplicas: "{{ kafkaDefaultReplicationFactor | int - 1 }}"
@@ -61,7 +66,7 @@ kafkaTransactionStateLogMinIsr: "{{  kafkaOffsetsTopicReplicationFactor }}"
 kafkaLogFlushIntervalMessages: 10000
 kafkaLogFlushIntervalMs: 1000
 kafkaLogRetentionHours: 168
-kafkaLogSegmentBytes: 2073741824                                # need to ask expert kafka, should we use default 1GB here or 2GB or more
+kafkaLogSegmentBytes: 2073741824                                # need to ask kafka expert, should we use default 1GB here or 2GB or more
 kafkalogRetentionCheckIntervalMs: 300000
 kafkaGroupInitRebalanceDelayMs: 3
 
@@ -69,5 +74,8 @@ kafkaGroupInitRebalanceDelayMs: 3
 # Only for AWS Based Cluster
 aws_kafka_ec2_region: "us-east-1"
 aws_kafka_ebs_device: "/dev/nvme1n1"
-aws_kafka_ebs_device_fs: "xfs"                                # currently tested with xfs only.
+aws_kafka_ebs_device_fs: "xfs"                                  # currently tested with xfs only.
 aws_kafka_ebs_device_mount_location: "{{ kafkaInstallDir }}"
+
+# Only AWS Cloudwatch Agent
+aws_kafka_cloudwatch_log_group: "kafka-{{ kafkaClusterName }}-logs"

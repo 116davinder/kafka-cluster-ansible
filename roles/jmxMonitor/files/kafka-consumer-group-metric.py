@@ -77,8 +77,8 @@ def main():
                 kc = KCMetric(topic.strip(), group_id.strip(), logDir, env)
                 if kc.checkConsumerGroupName():
                     threading.Thread(target=kc.getMetric).start()
-            except:
-                print("something failed")
+            except Exception as error:
+                print(f"something failed: {error}")
 
 
 main()

@@ -1,7 +1,7 @@
 ---
 
 kafkaManagerInstallDir: /opt
-kafkaManagerVersion: 3.0.0.5
+kafkaManagerVersion: 3.0.0.6
 kafkaManagerDownloadLink: "https://github.com/yahoo/CMAK/releases/download/{{ kafkaManagerVersion }}/cmak-{{ kafkaManagerVersion }}.zip"
 # if you don't want to download with ansible
 kafkaManagerRemoteDownload: true
