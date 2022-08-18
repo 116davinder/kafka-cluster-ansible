@@ -15,5 +15,5 @@
     state: present
   loop:
     - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nrjmx/nrjmx_2.1.1-1_noarch.deb
-    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nri-jmx/nri-jmx_3.1.0-1_arm64.deb
+    - https://download.newrelic.com/infrastructure_agent/linux/apt/pool/main/n/nri-jmx/nri-jmx_3.1.0-1_amd64.deb
   when: ansible_distribution in ['Debian', 'Ubuntu'] | list
