@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
 
     (1..cluster_nodes).each do |i|
       config.vm.define "kafka-#{i}" do |node|
-        node.vm.box = "ubuntu/focal64"
+        node.vm.box = "ubuntu/jammy64"
         node.vm.hostname  = "kafka#{i}.localhost"
         node.vm.network :private_network, ip: "192.168.56.10#{i}"
         # expose JMX port

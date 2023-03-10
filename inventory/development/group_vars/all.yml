@@ -1,6 +1,6 @@
 ---
 
-javaVersion: 11
+javaVersion: 17
 updateJava: false                                               # only when you need to update java version
 
 useSystemFirewall: false
@@ -36,12 +36,12 @@ kafkaZookeeperConnectionTimeoutMs: 10000
 # please use name like <environment>-kafka, so it get distinct name in NewRelic
 kafkaClusterName: development-kafka
 
-kafkaVersion: 3.2.1
+kafkaVersion: 3.4.0
 kafkaScalaVersion: 2.13
 kafkaTarLocation: "~/projects/kafka-cluster-ansible/kafka_{{ kafkaScalaVersion }}-{{ kafkaVersion }}.tgz"
 
 # below will be used while decommission/downgrade only
-kafkaOldVersion: 3.0.0
+kafkaOldVersion: 3.2.1
 kafkaOldScalaVersion: 2.13
 
 ### Production Optimized Parameters
