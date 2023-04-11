@@ -24,6 +24,7 @@ It is a group of playbooks to manage apache kafka.
 * **Open Source Web-UI** https://github.com/yahoo/kafka-manager
 * **Zookeeper Installation**
 https://github.com/116davinder/zookeeper-cluster-ansible
+* [Migration Docs](./docs/migrations/)
 
 ## **Development Setup with Vagrant**
 
@@ -183,6 +184,7 @@ It will be installed in similar way to apache kafka but it will start apache kaf
 
 ### **Kafka Tested Version**
 * 2.x
+* 3.x
 
 ### **Tested OS**
 * CentOS 7

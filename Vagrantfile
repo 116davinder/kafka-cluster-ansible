@@ -5,12 +5,12 @@ Vagrant.configure("2") do |config|
 
     (1..cluster_nodes).each do |i|
       config.vm.define "kafka-#{i}" do |node|
-        node.vm.box = "ubuntu/focal64"
-        node.vm.hostname  = "kafka#{i}"
+        node.vm.box = "ubuntu/jammy64"
+        node.vm.hostname  = "kafka#{i}.localhost"
         node.vm.network :private_network, ip: "192.168.56.10#{i}"
         # expose JMX port
         node.vm.network "forwarded_port", guest: 9999, host: "1000#{i}", protocol: "tcp"
-        # node.vm.provision :hosts, :sync_hosts => true
+        node.vm.provision :hosts, :add_localhost_hostnames => false, :sync_hosts => true   # required to autogenerate /etc/hosts on all nodes
       end
   end
   # Setting CPU and Memory for All machines

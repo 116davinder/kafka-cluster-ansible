@@ -1,6 +1,6 @@
 ---
 
-- hosts: clusterAddNodes
+- hosts: {{ target | default('clusterAddNodes') }}
   gather_facts: true
   become: true
   serial: 1
